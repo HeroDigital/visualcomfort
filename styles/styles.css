@@ -175,8 +175,8 @@ a.button.secondary, button.secondary {
 a.button-primary {
   text-decoration-line: none;
   text-decoration-style: solid;
-  border: solid 1px #333333;
-  background-color: #ffffff;
+  border: solid 1px #333;
+  background-color: #fff;
   font-weight: 800;
   line-height: 20px;
   height: 45px;

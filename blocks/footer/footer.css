@@ -1,3 +1,5 @@
+/* stylelint-disable no-descending-specificity */
+
 footer {
   background-color: var(--background-color);
   font-size: var(--body-font-size-s);

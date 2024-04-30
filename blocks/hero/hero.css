@@ -1,3 +1,5 @@
+/* stylelint-disable no-descending-specificity */
+
 main .hero-container > div {
   max-width: unset;
 }
@@ -22,7 +24,7 @@ main .hero-container {
   max-width: 1200px;
   margin: 0;
   font-size: 57px;
-  letter-spacing: 0px;
+  letter-spacing: 0;
   font-weight: 400;
   text-align: start;
 }
@@ -71,7 +73,6 @@ main .hero-container {
  .hero {
   min-height: unset;
   padding: 0;
-  min-height: unset;
  }
 
  .hero picture {

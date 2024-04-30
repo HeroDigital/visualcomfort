@@ -36,7 +36,6 @@
 .columns > div > div:not(.columns-img-col) h5,
 .columns > div > div:not(.columns-img-col) h6 {
   text-align: left;
-  line-height: 56px;
   font-weight: 300;
   line-height: normal;
 }
@@ -57,10 +56,12 @@
   .columns > div > .columns-img-col {
     width: 100%;
   }
-  .columns > div > div:not(.columns-img-col) {
-    width: 100%;
-  }
+
   .columns > div > div {
     margin: 0.5rem 0;
+  }
+  
+  .columns > div > div:not(.columns-img-col) {
+    width: 100%;
   }
 }
