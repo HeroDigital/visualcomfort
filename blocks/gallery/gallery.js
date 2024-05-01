@@ -62,7 +62,7 @@ export default async function decorate(block) {
   block.innerHTML = `
     <div class="gallery-grid">
       ${media.map((item, index) => `
-        <div class="gallery-grid__item">
+        <div class="gallery-grid-item">
           <button data-index="${index}" aria-label="Open ${item.caption} details">
             <picture>
               <source srcset="${item.images.normal}" type="image/jpeg" media="(min-width: 600px)" />
@@ -86,27 +86,27 @@ export default async function decorate(block) {
     const reportForm = media[selectedIndex]._forms.report;
 
     const html = `
-      <div class="gallery-modal__nav">
-        <div class="gallery-modal__nav-panel">
-          <button class="gallery-modal__nav-button prev" aria-label="Previous product">
+      <div class="gallery-modal-nav">
+        <div class="gallery-modal-nav-panel">
+          <button class="gallery-modal-nav-button prev" aria-label="Previous product">
           ${ICONS.prev}
           </button>
         </div>
-        <div class="gallery-modal__nav-panel">
-          <button class="gallery-modal__nav-button next" aria-label="Next product">
+        <div class="gallery-modal-nav-panel">
+          <button class="gallery-modal-nav-button next" aria-label="Next product">
             ${ICONS.next}
           </button>
         </div>
       </div>
-      <div class="gallery-modal__content" role="dialog" aria-modal="true" id="gallery-modal" aria-label="ProductGallery">
-        <button class="gallery-modal__close" aria-label="Close gallery">
+      <div class="gallery-modal-content" role="dialog" aria-modal="true" id="gallery-modal" aria-label="ProductGallery">
+        <button class="gallery-modal-close" aria-label="Close gallery">
           ${ICONS.close}
         </button>
-        <div class="gallery-modal__body">
-          <picture class="gallery-modal__image">
+        <div class="gallery-modal-body">
+          <picture class="gallery-modal-image">
             <source srcset="${instagramPost.images.normal}" type="image/jpeg" media="(min-width: 600px)" />
             <img src="${instagramPost.images.mobile}" alt="${instagramPost.caption}" />
-            <form action="${reportForm.action.href}" method="${reportForm.method}" class="gallery-modal__report-form">
+            <form action="${reportForm.action.href}" method="${reportForm.method}" class="gallery-modal-report-form">
               <p>
                 <strong>Are you sure you want to report this photo?</strong>
                 <br />
@@ -114,31 +114,31 @@ export default async function decorate(block) {
               </p>
               <input type="email" required name="${reportForm.fields[0].name}" placeholder="${reportForm.fields[0].placeholder}" aria-label="${reportForm.fields[0].name}" />
               <input type="text" name="${reportForm.fields[1].name}" placeholder="${reportForm.fields[1].placeholder}" aria-label="${reportForm.fields[1].name}" />
-              <div class="gallery-modal__report-actions">
-                <button type="button" class="gallery-modal__report-cancel" aria-label="Cancel report">
+              <div class="gallery-modal-report-actions">
+                <button type="button" class="gallery-modal-report-cancel" aria-label="Cancel report">
                   Cancel
                 </button>
-                <input type="submit" class="gallery-modal__report-submit" name="${reportForm.fields[2].name}" value="${reportForm.fields[2].value}" aria-label="Submit report" />
+                <input type="submit" class="gallery-modal-report-submit" name="${reportForm.fields[2].name}" value="${reportForm.fields[2].value}" aria-label="Submit report" />
               </div>
             </form>
-            <button class="gallery-modal__report-open" aria-label="Report this photo">
+            <button class="gallery-modal-report-open" aria-label="Report this photo">
               ${ICONS.exclamation}
             </button>
           </picture>
-          <div class="gallery-modal__info">
-            <a href="${instagramPost.original_source}" class="gallery-modal__post-link" target="_blank" rel="noopener noreferrer">
+          <div class="gallery-modal-info">
+            <a href="${instagramPost.original_source}" class="gallery-modal-post-link" target="_blank" rel="noopener noreferrer">
               ${ICONS.instagram}
               <span>${instagramPost._embedded.uploader.username}</span>
             </a>
-            <div class="gallery-modal__details">
-              <h2 class="gallery-modal__modal-title">Shop this look</h2>
-              <a href="${product.product_url}" class="gallery-modal__link">
-                <picture class="gallery-modal__product">
+            <div class="gallery-modal-details">
+              <h2 class="gallery-modal-modal-title">Shop this look</h2>
+              <a href="${product.product_url}" class="gallery-modal-link">
+                <picture class="gallery-modal-product">
                   <source srcset="${product._embedded.base_image.images.normal}" type="image/jpeg" media="(min-width: 600px)" />
                   <img src="${product._embedded.base_image.images.mobile}" alt="${product._embedded.base_image.caption}" />
                 </picture>
               </a>
-              <p class="gallery-modal__caption">${product._embedded.base_image.caption}</p>
+              <p class="gallery-modal-caption">${product._embedded.base_image.caption}</p>
             </div>
           </div>
         </div>
@@ -155,7 +155,7 @@ export default async function decorate(block) {
     firstElement.focus();
   }
 
-  const products = block.querySelectorAll('.gallery-grid__item button');
+  const products = block.querySelectorAll('.gallery-grid-item button');
 
   function handleProductClick(event) {
     selectedIndex = parseInt(event.currentTarget.dataset.index, 10);
@@ -173,14 +173,14 @@ export default async function decorate(block) {
   function handleFormSubmit(event) {
     event.preventDefault();
 
-    if (!event.target.classList.contains('gallery-modal__report-form')) return;
+    if (!event.target.classList.contains('gallery-modal-report-form')) return;
 
     const form = event.target;
     const formData = new FormData(form);
 
     if (reportedIndexes.includes(selectedIndex)) {
       form.innerHTML = `
-        <div class="gallery-modal__report-message">
+        <div class="gallery-modal-report-message">
           ${ICONS.exclamation}
           <p>The photo was already reported</p>
         </div>
@@ -206,7 +206,7 @@ export default async function decorate(block) {
       .then(() => {
         reportedIndexes.push(selectedIndex);
         form.innerHTML = `
-          <div class="gallery-modal__report-message">
+          <div class="gallery-modal-report-message">
             ${ICONS.check}
             <p>The photo was successfully reported</p>
           </div>
@@ -214,7 +214,7 @@ export default async function decorate(block) {
       })
       .catch(() => {
         form.innerHTML = `
-          <div class="gallery-modal__report-message">
+          <div class="gallery-modal-report-message">
             ${ICONS.error}
             <p>There was an error submitting the form, please try again later</p>
           </div>
@@ -225,7 +225,7 @@ export default async function decorate(block) {
   document.documentElement.addEventListener('submit', handleFormSubmit);
 
   function handleModalClick(event) {
-    if (event.target.closest('.gallery-modal__nav-button')) {
+    if (event.target.closest('.gallery-modal-nav-button')) {
       if (event.target.classList.contains('prev')) {
         selectedIndex = (selectedIndex + media.length - 1) % media.length;
       } else {
@@ -236,19 +236,19 @@ export default async function decorate(block) {
       return;
     }
 
-    if (event.target.closest('.gallery-modal__report-open')) {
-      const form = document.querySelector('.gallery-modal__report-form');
+    if (event.target.closest('.gallery-modal-report-open')) {
+      const form = document.querySelector('.gallery-modal-report-form');
       if (form) form.classList.add('show');
       return;
     }
 
-    if (event.target.closest('.gallery-modal__report-cancel')) {
-      const form = document.querySelector('.gallery-modal__report-form');
+    if (event.target.closest('.gallery-modal-report-cancel')) {
+      const form = document.querySelector('.gallery-modal-report-form');
       if (form) form.classList.remove('show');
       return;
     }
 
-    if (event.target.closest('.gallery-modal__close') || event.target.classList.contains('gallery-modal__nav')) {
+    if (event.target.closest('.gallery-modal-close') || event.target.classList.contains('gallery-modal-nav')) {
       const modalDiv = document.querySelector('.gallery-modal');
       if (modalDiv) modalDiv.remove();
     }
