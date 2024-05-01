@@ -308,12 +308,11 @@ export default async function decorate(block) {
       } else if (xDiff < -TOUCH_THRESHOLD) {
         selectedIndex = (selectedIndex + media.length - 1) % media.length;
       }
+      renderModal();
     }
 
     xDown = null;
     yDown = null;
-
-    renderModal();
   }
 
   document.addEventListener('touchstart', handleTouchStart, false);
