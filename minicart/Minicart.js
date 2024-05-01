@@ -180,7 +180,7 @@ export class Minicart extends Component {
 export async function toggle(refetch = true) {
   if (!cartVisible) {
     // Load CSS
-    await loadCSS('/aem/styles/minicart.css');
+    await loadCSS('/styles/minicart.css');
   }
 
   cartVisible = !cartVisible;

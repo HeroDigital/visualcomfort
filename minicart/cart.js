@@ -279,3 +279,53 @@ export async function addToCart(sku, options, quantity) {
     done();
   }
 }
+
+export async function removeItemFromCart(uid) {
+  const done = waitForCart();
+  const variables = {
+    cartId: store.getCartId(),
+    uid,
+  };
+
+  try {
+    const { data, errors } = await performMonolithGraphQLQuery(
+      removeItemFromCartMutation,
+      variables,
+      false,
+      true,
+    );
+    handleCartErrors(errors);
+    store.setCart(data.removeItemFromCart.cart);
+  } catch (err) {
+    console.error('Could not remove item from cart', err);
+  } finally {
+    done();
+  }
+}
+
+export async function updateQuantityOfCartItem(cartItemUid, quantity) {
+  const done = waitForCart();
+  const variables = {
+    cartId: store.getCartId(),
+    items: [{
+      cart_item_uid: cartItemUid,
+      quantity,
+    }],
+  };
+  try {
+    const { data, errors } = await performMonolithGraphQLQuery(
+      updateCartItemsMutation,
+      variables,
+      false,
+      true,
+    );
+    handleCartErrors(errors);
+    store.setCart(data.updateCartItems.cart);
+
+    console.debug('Update quantity of item in cart', variables, data.updateCartItems.cart);
+  } catch (err) {
+    console.error('Could not update quantity of item in cart', err);
+  } finally {
+    done();
+  }
+}

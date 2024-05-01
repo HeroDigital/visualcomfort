@@ -253,7 +253,7 @@ export async function getProduct(sku) {
 // Store product view history in session storage
 (async () => {
   const storeViewCode = await getConfigValue('commerce-store-view-code');
-  window.adobeDataLayer.push((dl) => {
+  window.adobeDataLayer?.push((dl) => {
     dl.addEventListener('adobeDataLayer:change', (event) => {
       const key = `${storeViewCode}:productViewHistory`;
       let viewHistory = JSON.parse(window.localStorage.getItem(key) || '[]');
