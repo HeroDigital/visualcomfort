@@ -1,3 +1,4 @@
+import { cartApi } from '../../minicart/api.js';
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
@@ -140,6 +141,23 @@ export default async function decorate(block) {
       });
     });
   }
+
+  const navTools = nav.querySelector('.icon-shopping-bag');
+  // const navTools = nav.querySelector('.nav-tools');
+
+  // Minicart
+  console.log('cartApi', cartApi);
+  const minicartButton = document.createRange().createContextualFragment(`<div class="minicart-wrapper">
+    <button type="button" class="nav-cart-button">0</button>
+    <div></div>
+  </div>`);
+  navTools.append(minicartButton);
+  navTools.querySelector('.nav-cart-button').addEventListener('click', () => {
+    cartApi.toggleCart();
+  });
+  cartApi.cartItemsQuantity.watch((quantity) => {
+    navTools.querySelector('.nav-cart-button').textContent = quantity;
+  });
 
   // hamburger for mobile
   const hamburger = document.createElement('div');
