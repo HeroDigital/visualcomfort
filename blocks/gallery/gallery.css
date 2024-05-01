@@ -67,6 +67,10 @@
   @media (min-width: 1200px) {
     --min-height: 580px;
   }
+
+  button:focus:not(:focus-visible) {
+    outline: none;
+  }
 }
 
 .gallery-modal__nav {
@@ -198,12 +202,103 @@
 .gallery-modal__image {
   aspect-ratio: 1 / 1;
   overflow: hidden;
+  position: relative;
 
   img {
     display: block;
     height: 100%;
     object-fit: contain;
     width: 100%;
+  }
+}
+
+.gallery-modal__report-open {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  bottom: 0;
+  color: #666;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  right: 0;
+
+  &:hover {
+    color: #333;
+  }
+}
+
+.gallery-modal__report-form {
+  background-color: rgba(249, 249, 249, 0.9);
+  inset: 0;
+  padding: 15px;
+  position: absolute;
+  z-index: 1;
+
+  &:not(.show) {
+    display: none;
+  }
+
+  p {
+    color: #454545;
+    font-size: 12px;
+    line-height: 2;
+    text-wrap: balance;
+  }
+
+  input[type="text"],
+  input[type="email"] {
+    border: 1px solid #e0e0e0;
+    box-sizing: border-box;
+    display: block;
+    font-family: inherit;
+    font-size: 15px;
+    padding: 15px;
+    margin-top: 25px;
+    width: 100%;
+  }
+}
+
+.gallery-modal__report-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-top: 25px;
+
+  .gallery-modal__report-cancel,
+  .gallery-modal__report-submit {
+    appearance: none;
+    border: 0;
+    display: inline-block;
+    font-family: inherit;
+    height: 40px;
+    margin: 0;
+    padding: 10px 30px;
+    text-transform: none;
+  }
+
+  .gallery-modal__report-submit {
+    background-color: #7a7d81;
+    color: #fff;
+  }
+
+  .gallery-modal__report-cancel {
+    background-color: transparent;
+    color: rgba(0, 0, 0, 0.75)
+  }
+}
+
+.gallery-modal__report-message {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  
+  p {
+    margin: 0;
+  }
+
+  svg {
+    transform: scale(0.6);
   }
 }
 
