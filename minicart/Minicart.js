@@ -77,7 +77,7 @@ class ProductCard extends Component {
   onSubmitQuantityChange = async (event) => {
     event.target.disabled = true;
     const { quantity } = this.state;
-    const { item_id } = this.props.item;
+    const { item_id } = this.props.item.product;
     await this.props.api.updateQuantityOfCartItem(item_id, quantity);
     event.target.disabled = false;
   };
