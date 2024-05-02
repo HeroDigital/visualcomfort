@@ -77,8 +77,8 @@ class ProductCard extends Component {
   onSubmitQuantityChange = async (event) => {
     event.target.disabled = true;
     const { quantity } = this.state;
-    const { uid } = this.props.item;
-    await this.props.api.updateQuantityOfCartItem(uid, quantity);
+    const { item_id } = this.props.item;
+    await this.props.api.updateQuantityOfCartItem(item_id, quantity);
     event.target.disabled = false;
   };
 
@@ -115,7 +115,7 @@ class ProductCard extends Component {
           <button>Edit</button>
           <button onclick=${() => this.setState({ confirmDelete: true })}>Remove</button>
         </div>
-        ${state.confirmDelete && html`<${ConfirmDeletionOverlay} close=${() => this.setState({ confirmDelete: false })} confirm=${() => this.props.api.removeItemFromCart(item.uid, 'Cart Quick View')} />`}
+        ${state.confirmDelete && html`<${ConfirmDeletionOverlay} close=${() => this.setState({ confirmDelete: false })} confirm=${() => this.props.api.removeItemFromCart(item.product.item_id, 'Cart Quick View')} />`}
       </div>
     </li>`;
   }

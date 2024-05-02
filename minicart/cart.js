@@ -73,8 +73,8 @@ const createCartMutation = `mutation createSessionCart {
   cartId: createSessionCart
 }`;
 
-const removeItemFromCartMutation = `mutation removeItemFromCart($cartId: String!, $uid: ID!) {
-  removeItemFromCart(input: { cart_id: $cartId, cart_item_uid: $uid }) {
+const removeItemFromCartMutation = `mutation removeItemFromCart($cartId: String!, $itemId: Int!) {
+  removeItemFromCart(input: { cart_id: $cartId, cart_item_id: $itemId }) {
       cart {
           ...cartQuery
       }
@@ -232,6 +232,8 @@ export function updateCartFromLocalStorage(options) {
 }
 
 export async function addToCart(sku, options, quantity) {
+  await updateMagentoCacheSections(['cart','side-by-side']);
+
   const done = waitForCart();
   try {
     const variables = {
@@ -280,11 +282,13 @@ export async function addToCart(sku, options, quantity) {
   }
 }
 
-export async function removeItemFromCart(uid) {
+export async function removeItemFromCart(itemId) {
+  await updateMagentoCacheSections(['cart','side-by-side']);
+
   const done = waitForCart();
   const variables = {
     cartId: store.getCartId(),
-    uid,
+    itemId,
   };
 
   try {
@@ -295,7 +299,8 @@ export async function removeItemFromCart(uid) {
       true,
     );
     handleCartErrors(errors);
-    store.setCart(data.removeItemFromCart.cart);
+
+    await store.updateCart(); // update localStorage with latest cart data
   } catch (err) {
     console.error('Could not remove item from cart', err);
   } finally {
@@ -303,12 +308,14 @@ export async function removeItemFromCart(uid) {
   }
 }
 
-export async function updateQuantityOfCartItem(cartItemUid, quantity) {
+export async function updateQuantityOfCartItem(cartItemId, quantity) {
+  await updateMagentoCacheSections(['cart','side-by-side']);
+
   const done = waitForCart();
   const variables = {
     cartId: store.getCartId(),
     items: [{
-      cart_item_uid: cartItemUid,
+      cart_item_id: cartItemId,
       quantity,
     }],
   };
@@ -320,7 +327,8 @@ export async function updateQuantityOfCartItem(cartItemUid, quantity) {
       true,
     );
     handleCartErrors(errors);
-    store.setCart(data.updateCartItems.cart);
+    
+    await store.updateCart(); // update localStorage with latest cart data
 
     console.debug('Update quantity of item in cart', variables, data.updateCartItems.cart);
   } catch (err) {

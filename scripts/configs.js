@@ -8,11 +8,14 @@
 export const calcEnvironment = () => {
   const { href } = window.location;
   let environment = 'prod';
-  if (href.includes('.hlx.page')) {
+  if (href.includes('.hlx.page') || href.includes('stage2.visualcomfort.com')) {
     environment = 'stage';
   }
-  if (href.includes('localhost')) {
+  if (href.includes('stage3.visualcomfort.com')) {
     environment = 'dev';
+  }
+  if (href.includes('localhost')) {
+    environment = 'local';
   }
 
   const environmentFromConfig = window.sessionStorage.getItem('environment');

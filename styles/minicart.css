@@ -177,7 +177,8 @@
     font-size: 0;
     background-repeat: no-repeat;
     background-size: contain;
-    background-color: transparent;
+    background-color: red;
+    /* background-color: transparent; */
 }
 
 .minicart-panel .minicart-list .minicart-product > .actions button:first-child {

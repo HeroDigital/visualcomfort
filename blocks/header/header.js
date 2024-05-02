@@ -146,7 +146,6 @@ export default async function decorate(block) {
   // const navTools = nav.querySelector('.nav-tools');
 
   // Minicart
-  console.log('cartApi', cartApi);
   const minicartButton = document.createRange().createContextualFragment(`<div class="minicart-wrapper">
     <button type="button" class="nav-cart-button">0</button>
     <div></div>

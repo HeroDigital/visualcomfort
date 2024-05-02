@@ -144,7 +144,7 @@ export async function performMonolithGraphQLQuery(query, variables, GET = true, 
 
   const headers = {
     'Content-Type': 'application/json',
-    Store: await getConfigValue('commerce-store-view-code'),
+    Store: await getConfigValue('commerce-store-view-code') ||  "default",
   };
 
   if (USE_TOKEN) {
