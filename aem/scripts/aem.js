@@ -151,7 +151,7 @@ function sampleRUM(checkpoint, data = {}) {
 function setup() {
   window.hlx = window.hlx || {};
   window.hlx.RUM_MASK_URL = 'full';
-  window.hlx.codeBasePath = '';
+  window.hlx.codeBasePath = '/aem';
   window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
 
   const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
@@ -492,7 +492,7 @@ async function fetchPlaceholders(prefix = 'default') {
   window.placeholders = window.placeholders || {};
   if (!window.placeholders[prefix]) {
     window.placeholders[prefix] = new Promise((resolve) => {
-      fetch(`${prefix === 'default' ? '' : prefix}/placeholders.json`)
+      fetch(`/aem${prefix === 'default' ? '' : prefix}/placeholders.json`)
         .then((resp) => {
           if (resp.ok) {
             return resp.json();
