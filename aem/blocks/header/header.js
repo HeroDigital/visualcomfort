@@ -1,5 +1,5 @@
 import { cartApi } from '../../minicart/api.js';
-import { getMetadata } from '../../scripts/aem.js';
+import { getMetadata } from '../../../aem/scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 // media query match that indicates mobile/tablet width
