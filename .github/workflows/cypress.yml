@@ -3,12 +3,20 @@ name: Cypress Tests
 on: [pull_request,workflow_dispatch]
 
 env:
-  ADOBE_EDGE_URL: 'https://${{ github.head_ref || github.ref_name }}--adobe-edge--visualcomfort.hlx.page'
+  BRANCH_NAME: '${{ github.head_ref || github.ref_name }}'
 
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
     steps:
+      - name: Sets MODIFIED_BRANCH_NAME
+        env:
+          RAW_BRANCH_NAME: "${{env.BRANCH_NAME}}"
+        run: |
+          echo "MODIFIED_BRANCH_NAME=${RAW_BRANCH_NAME/\//-}" >> $GITHUB_ENV
+      - name: Sets ADOBE_EDGE_URL
+        run: |
+          echo "ADOBE_EDGE_URL=https://${{ env.MODIFIED_BRANCH_NAME }}--adobe-edge--visualcomfort.hlx.page" >> $GITHUB_ENV
       - name: Checkout
         uses: actions/checkout@v4
       - name: Cypress run
