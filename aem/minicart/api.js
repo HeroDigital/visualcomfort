@@ -1,5 +1,6 @@
+import { queryLoggedInCart } from './cart.js';
 import { addMagentoCacheListener, updateMagentoCacheSections } from '../storage/util.js';
-import { getCartFromLocalStorage, getCartIdFromLocalStorage, transformCart } from './util.js';
+import { getCartFromLocalStorage, getCartIdFromLocalStorage, getTokenFromLocalStorage, transformCart } from './util.js';
 
 /* eslint-disable import/no-cycle */
 class Store {
@@ -40,8 +41,22 @@ class Store {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  getCartId() {
-    return getCartIdFromLocalStorage();
+  async getCartId() {
+
+    let cartId = getCartIdFromLocalStorage();
+    
+    if (!cartId) {
+      console.log('missing cart id, attempting to get from server.')
+      const token = getTokenFromLocalStorage();
+
+      if (token) {
+        cartId = await queryLoggedInCart(token);
+      } else {
+        console.error('No token found in localStorage.');
+      }
+    }
+    
+    return cartId;
   }
 
   getCart() {
@@ -90,7 +105,8 @@ export const cartApi = {
   addToCart: async (sku, options, quantity) => {
     const { addToCart } = await import('./cart.js');
     const { showCart } = await import('./Minicart.js');
-    if (!store.getCartId()) {
+    const cartId = await store.getCartId()
+    if (!cartId) {
       console.debug('Cannot add item to cart, need to create a new cart first.');
       await updateMagentoCacheSections(['cart', 'customer', 'side-by-side']);
     }

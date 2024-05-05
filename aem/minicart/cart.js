@@ -69,6 +69,12 @@ const getCartQuery = `query getCart($cartId: String!) {
 }
 ${cartQueryFragment}`;
 
+const getLoggedInCartIdQuery = `query {
+  customerCart {
+      id
+  }
+}`;
+
 const createCartMutation = `mutation createSessionCart {
   cartId: createSessionCart
 }`;
@@ -106,6 +112,7 @@ ${cartQueryFragment}`;
 
 export {
   getCartQuery,
+  getLoggedInCartIdQuery,
   createCartMutation,
   removeItemFromCartMutation,
   updateCartItemsMutation,
@@ -235,13 +242,30 @@ export function updateCartFromLocalStorage(options) {
   done();
 }
 
+export async function queryLoggedInCart(token) {
+  try {
+    const variables = {};
+    const { data, errors } = await performMonolithGraphQLQuery(
+      getLoggedInCartIdQuery,
+      variables,
+      false,
+      token,
+    );
+    handleCartErrors(errors);
+
+    return data.customerCart.id;
+  } catch (err) {
+    console.error('Could not query logged in user\'s cart', err);
+  }
+}
+
 export async function addToCart(sku, options, quantity) {
   await updateMagentoCacheSections(['cart','side-by-side']);
 
   const done = waitForCart();
   try {
     const variables = {
-      cartId: store.getCartId(),
+      cartId: await store.getCartId(),
       cartItems: [{
         sku,
         quantity,
@@ -291,7 +315,7 @@ export async function removeItemFromCart(itemId, closeModal = false) {
 
   const done = waitForCart();
   const variables = {
-    cartId: store.getCartId(),
+    cartId: await store.getCartId(),
     itemId,
   };
 
@@ -317,7 +341,7 @@ export async function updateQuantityOfCartItem(cartItemId, quantity) {
 
   const done = waitForCart();
   const variables = {
-    cartId: store.getCartId(),
+    cartId: await store.getCartId(),
     items: [{
       cart_item_id: cartItemId,
       quantity,
