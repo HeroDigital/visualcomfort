@@ -94,7 +94,7 @@ class ProductCard extends Component {
           <a href=${`/products/${product.url_key}/${product.sku.toLowerCase()}`}>${ProductCard.renderImage(item)}</a>
         </div>
         <div class="info">
-          <div class="name"><a href=${`/products/${product.url_key}/${product.sku.toLowerCase()}`} dangerouslySetInnerHTML=${{ __html: product.name }} /></div>
+          <div class="name"><a href=${`${product.product_url}`} dangerouslySetInnerHTML=${{ __html: product.name }} /></div>
           ${configurable_options && (html`<div class="options">
             <input type="checkbox" id="see-options-${index}" />
             <label for="see-options-${index}">See Details</label>
@@ -112,10 +112,10 @@ class ProductCard extends Component {
           </div>
         </div>
         <div class="actions">
-          <button>Edit</button>
-          <button onclick=${() => this.setState({ confirmDelete: true })}>Remove</button>
+          <a href="${product.configure_url}">Edit</a>
+          <a href="#" onclick=${() => this.setState({ confirmDelete: true })}>Remove</a>
         </div>
-        ${state.confirmDelete && html`<${ConfirmDeletionOverlay} close=${() => this.setState({ confirmDelete: false })} confirm=${() => this.props.api.removeItemFromCart(item.product.item_id, 'Cart Quick View')} />`}
+        ${state.confirmDelete && html`<${ConfirmDeletionOverlay} close=${() => this.setState({ confirmDelete: false })} confirm=${() => this.props.api.removeItemFromCart(item.product.item_id, true, 'Cart Quick View')} />`}
       </div>
     </li>`;
   }
@@ -161,7 +161,7 @@ export class Minicart extends Component {
 
     return html`<div class="minicart-panel">
       <div class="minicart-header">
-        <div class="title">Added to your bag</div>
+        <div class="title">${cart.total_quantity} items in cart</div>
         <div class="subtotal">Sub-Total: <span class="price">${this.formatter.format(cart.prices.subtotal_excluding_tax.value)}</span></div>
         <button class="close" onClick=${() => close(false)}>Close</button>
       </div>

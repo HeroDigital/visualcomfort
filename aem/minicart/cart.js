@@ -148,14 +148,18 @@ const handleCartErrors = (errors) => {
  *
  * @returns void
  */
-export function waitForCart() {
+export function waitForCart(closeModal = false) {
   const buttons = document.querySelectorAll('button.nav-cart-button, .minicart-header > .close');
   const wrapper = document.querySelector('.minicart-wrapper');
   wrapper?.classList.add('loading');
   buttons.forEach((button) => { button.disabled = true; });
-  return () => {
+  return (closeModal) => {
     wrapper?.classList.remove('loading');
     buttons.forEach((button) => { button.disabled = false; });
+
+    if (closeModal) {
+      document.querySelector('.overlay-background')?.remove();
+    }
   };
 }
 
@@ -282,7 +286,7 @@ export async function addToCart(sku, options, quantity) {
   }
 }
 
-export async function removeItemFromCart(itemId) {
+export async function removeItemFromCart(itemId, closeModal = false) {
   await updateMagentoCacheSections(['cart','side-by-side']);
 
   const done = waitForCart();
@@ -304,7 +308,7 @@ export async function removeItemFromCart(itemId) {
   } catch (err) {
     console.error('Could not remove item from cart', err);
   } finally {
-    done();
+    done(closeModal);
   }
 }
 

@@ -146,7 +146,7 @@ export default async function decorate(block) {
   // const navTools = nav.querySelector('.nav-tools');
 
   // Minicart
-  const minicartButton = document.createRange().createContextualFragment(`<div class="minicart-wrapper">
+  const minicartButton = document.createRange().createContextualFragment(`<div class="minicart-wrapper" data-count="">
     <button type="button" class="nav-cart-button">0</button>
     <div></div>
   </div>`);
@@ -156,6 +156,7 @@ export default async function decorate(block) {
   });
   cartApi.cartItemsQuantity.watch((quantity) => {
     navTools.querySelector('.nav-cart-button').textContent = quantity;
+    navTools.querySelector('.minicart-wrapper').dataset.count = quantity;
   });
 
   // hamburger for mobile

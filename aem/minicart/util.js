@@ -28,6 +28,8 @@ export function transformCart(localStorageCart) {
         product: {
           name: item.product_name,
           sku: item.product_sku,
+          configure_url: item.configure_url,
+          product_url: item.product_url,
           item_id: parseInt(item.item_id),
           url: item.product_url,
           thumbnail: {

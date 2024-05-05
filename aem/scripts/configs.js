@@ -11,11 +11,8 @@ export const calcEnvironment = () => {
   if (href.includes('.hlx.page') || href.includes('stage2.visualcomfort.com')) {
     environment = 'stage';
   }
-  if (href.includes('stage3.visualcomfort.com')) {
+  if (href.includes('stage3.visualcomfort.com') || href.includes('localhost')) {
     environment = 'dev';
-  }
-  if (href.includes('localhost')) {
-    environment = 'local';
   }
 
   const environmentFromConfig = window.sessionStorage.getItem('environment');
