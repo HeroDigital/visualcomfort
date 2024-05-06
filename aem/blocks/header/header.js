@@ -1,4 +1,4 @@
-import { getMetadata } from '../../../aem/scripts/aem.js';
+import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 import {
   createTabsList,
