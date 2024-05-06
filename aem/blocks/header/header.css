@@ -2,7 +2,7 @@
 
 .site-menu picture {
   display: none;
-  color: inherit;
+  color: inherit !important;
 }
 
 @media (width >= 1280px) {
