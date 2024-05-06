@@ -91,7 +91,7 @@ class ProductCard extends Component {
     return html`<li>
       <div class="minicart-product">
         <div class="image">
-          <a href=${`/products/${product.url_key}/${product.sku.toLowerCase()}`}>${ProductCard.renderImage(item)}</a>
+          <a href=${`${product.product_url}`}>${ProductCard.renderImage(item)}</a>
         </div>
         <div class="info">
           <div class="name"><a href=${`${product.product_url}`} dangerouslySetInnerHTML=${{ __html: product.name }} /></div>
@@ -160,16 +160,16 @@ export class Minicart extends Component {
     }
 
     return html`<div class="minicart-panel">
-      <div class="minicart-header">
-        <div class="title">${cart.total_quantity} items in cart</div>
-        <div class="subtotal">Sub-Total: <span class="price">${this.formatter.format(cart.prices.subtotal_excluding_tax.value)}</span></div>
-        <button class="close" onClick=${() => close(false)}>Close</button>
+      <div class="minicart-actions">
+        <button onClick=${() => { window.location.href = '/checkout/cart/'; }}>View Cart</button>
       </div>
       <ul class="minicart-list">
         ${state.cart.items.map((item, index) => html`<${ProductCard} index=${index} item=${item} formatter=${this.formatter} api=${props.api} />`)}
       </ul>
+      <div class="title">${cart.total_quantity} items in cart</div>
+      <div class="subtotal">Sub-Total: <span class="price">${this.formatter.format(cart.prices.subtotal_excluding_tax.value)}</span></div>
       <div class="minicart-actions">
-        <button onClick=${() => { window.location.href = '/cart'; }}>Go to cart</button>
+        <button onClick=${() => { window.location.href = '/checkout/'; }}>Begin Checkout</button>
       </div>
     </div>`;
   }

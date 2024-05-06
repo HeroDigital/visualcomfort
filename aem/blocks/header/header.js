@@ -79,13 +79,23 @@ function createMiniCart(nav) {
     <div></div>
   </div>`);
   cartIcon.append(minicartButton);
-  cartIcon.querySelector('.nav-cart-button').addEventListener('click', () => {
-    if (window.screen.width < 768) {
-      window.location.href = '/checkout/cart';
-    } else {
+
+  // toggle minicart on hover
+  cartIcon.addEventListener('mouseover', function() {
       cartApi.toggleCart();
-    }
+    });
+  
+  cartIcon.addEventListener('mouseout', function() {
+    cartApi.toggleCart();
   });
+  
+  // add click event listener to minicart icon
+  cartIcon.addEventListener('click', function(event) {
+    event.preventDefault();
+    window.location.href = '/checkout/cart/';
+  });
+
+  // listen for updates to cart item count and update UI accordingly
   cartApi.cartItemsQuantity.watch((quantity) => {
     cartIcon.querySelector('.nav-cart-button').textContent = quantity;
     cartIcon.querySelector('.minicart-wrapper').dataset.count = quantity;
