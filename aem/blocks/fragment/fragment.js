@@ -6,11 +6,11 @@
 
 import {
   decorateMain,
-} from '../../scripts/scripts.js';
+} from '../../../aem/scripts/scripts.js';
 
 import {
   loadBlocks,
-} from '../../scripts/aem.js';
+} from '../../../aem/scripts/aem.js';
 
 /**
  * Loads a fragment.
@@ -19,7 +19,7 @@ import {
  */
 export async function loadFragment(path) {
   if (path && path.startsWith('/')) {
-    const resp = await fetch(`${path}.plain.html`);
+  const resp = await fetch(`/aem${path}.plain.html`);
     if (resp.ok) {
       const main = document.createElement('main');
       main.innerHTML = await resp.text();
