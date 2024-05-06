@@ -142,21 +142,24 @@ export default async function decorate(block) {
     });
   }
 
-  const navTools = nav.querySelector('.icon-shopping-bag');
-  // const navTools = nav.querySelector('.nav-tools');
+  const cartIcon = nav.querySelector('.icon-shopping-bag');
 
   // Minicart
   const minicartButton = document.createRange().createContextualFragment(`<div class="minicart-wrapper" data-count="">
     <button type="button" class="nav-cart-button">0</button>
     <div></div>
   </div>`);
-  navTools.append(minicartButton);
-  navTools.querySelector('.nav-cart-button').addEventListener('click', () => {
-    cartApi.toggleCart();
+  cartIcon.append(minicartButton);
+  cartIcon.querySelector('.nav-cart-button').addEventListener('click', () => {
+    if (window.screen.width < 768) {
+      window.location.href = '/checkout/cart';
+    } else {
+      cartApi.toggleCart();
+    }
   });
   cartApi.cartItemsQuantity.watch((quantity) => {
-    navTools.querySelector('.nav-cart-button').textContent = quantity;
-    navTools.querySelector('.minicart-wrapper').dataset.count = quantity;
+    cartIcon.querySelector('.nav-cart-button').textContent = quantity;
+    cartIcon.querySelector('.minicart-wrapper').dataset.count = quantity;
   });
 
   // hamburger for mobile
