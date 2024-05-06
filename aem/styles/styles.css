@@ -42,8 +42,11 @@
   --heading-font-size-xs: 18px;
 
   /* nav height */
-  --nav-height: 130px;
+  --nav-height: 55px;
   --mobile-nav-height: 55px;
+  --small-mobile-nav-height: 55px;
+  --medium-mobile-nav-height: 35px;
+
 }
 
 @font-face {
@@ -64,6 +67,12 @@
   }
 }
 
+@media (width >= 1280px) {
+  :root {
+    --nav-height: 117px;
+  }
+}
+
 body {
   font-size: var(--body-font-size-xs);
   margin: 0;
@@ -80,6 +89,12 @@ body.appear {
 
 header {
   height: var(--nav-height);
+}
+
+@media (width >= 1280px) {
+  header {
+    padding-top: 18px;
+  }
 }
 
 h1, h2, h3,
@@ -235,14 +250,14 @@ main .section br {
 }
 
 @media (width >= 1200px) and (width < 1400px) {
-  .section:not(.hero-container, .nav-brand, .footer-section) {
+  .section:not(.nav-menu-content, .hero-container, .nav-brand, .footer-section) {
     max-width: 1400px;
     margin: 0 100px;
   }
 }
 
 @media (width >= 1400px) {
-  .section:not(.hero-container, .nav-brand, .footer-section) {
+  .section:not(.nav-menu-content, .hero-container, .nav-brand, .footer-section) {
     max-width: 1400px;
     margin: 0 auto;
   }
@@ -260,4 +275,8 @@ main .section.top-border {
 
 main .section.bottom-border {
   border-bottom: 1px solid var(--divider-border-color);
+}
+
+.no-scroll {
+  overflow-y: hidden;
 }
