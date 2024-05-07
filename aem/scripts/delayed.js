@@ -1,7 +1,8 @@
 // eslint-disable-next-line import/no-cycle
-import { sampleRUM } from './aem.js';
+import { sampleRUM, loadScript } from './aem.js';
 
 // Core Web Vitals RUM collection
 sampleRUM('cwv');
 
-// add more delayed functionality here
+// GTM script delayed load
+loadScript('https://a.visualcomfort.com/gtm.js?id=GTM-PMG8JJ2', { async: true });
