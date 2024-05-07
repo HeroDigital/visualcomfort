@@ -81,16 +81,16 @@ function createMiniCart(nav) {
   cartIcon.append(minicartButton);
 
   // toggle minicart on hover
-  cartIcon.addEventListener('mouseover', function() {
-      cartApi.toggleCart();
-    });
-  
-  cartIcon.addEventListener('mouseout', function() {
+  cartIcon.addEventListener('mouseover', () => {
     cartApi.toggleCart();
   });
-  
+
+  cartIcon.addEventListener('mouseout', () => {
+    cartApi.toggleCart();
+  });
+
   // add click event listener to minicart icon
-  cartIcon.addEventListener('click', function(event) {
+  cartIcon.addEventListener('click', (event) => {
     event.preventDefault();
     window.location.href = '/checkout/cart/';
   });
