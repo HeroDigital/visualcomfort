@@ -81,19 +81,20 @@ function createMiniCart(nav) {
   cartIcon.append(minicartButton);
 
   // toggle minicart on hover
-  cartIcon.addEventListener('mouseover', () => {
+  cartIcon.addEventListener('click', () => {
     cartApi.toggleCart();
   });
 
-  cartIcon.addEventListener('mouseout', () => {
-    cartApi.toggleCart();
-  });
+  
+  // cartIcon.addEventListener('click', () => {
+  //   cartApi.toggleCart();
+  // });
 
   // add click event listener to minicart icon
-  cartIcon.addEventListener('click', (event) => {
-    event.preventDefault();
-    window.location.href = '/checkout/cart/';
-  });
+  // cartIcon.addEventListener('click', (event) => {
+  //   event.preventDefault();
+  //   window.location.href = '/checkout/cart/';
+  // });
 
   // listen for updates to cart item count and update UI accordingly
   cartApi.cartItemsQuantity.watch((quantity) => {
