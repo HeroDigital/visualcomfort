@@ -150,12 +150,12 @@ const handleCartErrors = (errors) => {
 };
 
 /**
- * Function called when waiting for the cart to return. 
+ * Function called when waiting for the cart to return.
  * TODO: Should be customized with selectors specific to your implementation.
  *
  * @returns void
  */
-export function waitForCart(closeModal = false) {
+export function waitForCart() {
   const buttons = document.querySelectorAll('button.nav-cart-button, .minicart-header > .close');
   const wrapper = document.querySelector('.minicart-wrapper');
   wrapper?.classList.add('loading');
@@ -178,7 +178,7 @@ export function waitForCart(closeModal = false) {
  * @param {boolean | undefined} options.force should the "wait for cart" behavior be triggered
  */
 export async function resolveSessionCartDrift(options) {
-  let sectionsOfInterest = ['cart', 'customer', 'side-by-side'];
+  const sectionsOfInterest = ['cart', 'customer', 'side-by-side'];
 
   // We will exit and do nothing if there is no sign of a commerce session ever existing.
   if (isCommerceStatePristine() && !options.force) {
@@ -195,8 +195,7 @@ export async function resolveSessionCartDrift(options) {
   const loggedIn = getLoggedInFromLocalStorage();
 
   // This section is for toggling the logged in/out icon/status in your header (if relevant)
-  // TODO: update selectors in here to match your account header
-  document.querySelectorAll('.account-contact').forEach((item) => {
+  document.querySelectorAll('.icon-user').forEach((item) => {
     item.classList.add(loggedIn ? 'logged-in' : 'logged-out');
     item.classList.remove(loggedIn ? 'logged-out' : 'logged-in');
   });
@@ -228,14 +227,16 @@ export function updateCartFromLocalStorage(options) {
 
   // If the commerce session tells us we are logged in...
   if (registeredCustomer === true) {
-    // Update the account section in the header to point to the customer account page
-    document.querySelectorAll('.account-contact a').forEach((item) => item.setAttribute('href', '/customer/account'));
+    // Update the account section in the header
+    // authApi.updateAuthenticationDisplays();
+
     localStorage.setItem('loggedIn', true);
   } else {
     // else we are not logged in so we'll be sure the state reflects this
     if (previousLogin || !storedCart) {
       store.resetCart();
     }
+
     localStorage.setItem('loggedIn', false);
   }
   store.notifySubscribers();
@@ -256,11 +257,12 @@ export async function queryLoggedInCart(token) {
     return data.customerCart.id;
   } catch (err) {
     console.error('Could not query logged in user\'s cart', err);
+    return '';
   }
 }
 
 export async function addToCart(sku, options, quantity) {
-  await updateMagentoCacheSections(['cart','side-by-side']);
+  await updateMagentoCacheSections(['cart', 'side-by-side']);
 
   const done = waitForCart();
   try {
@@ -311,7 +313,7 @@ export async function addToCart(sku, options, quantity) {
 }
 
 export async function removeItemFromCart(itemId, closeModal = false) {
-  await updateMagentoCacheSections(['cart','side-by-side']);
+  await updateMagentoCacheSections(['cart', 'side-by-side']);
 
   const done = waitForCart();
   const variables = {
@@ -320,7 +322,7 @@ export async function removeItemFromCart(itemId, closeModal = false) {
   };
 
   try {
-    const { data, errors } = await performMonolithGraphQLQuery(
+    const { errors } = await performMonolithGraphQLQuery(
       removeItemFromCartMutation,
       variables,
       false,
@@ -337,7 +339,7 @@ export async function removeItemFromCart(itemId, closeModal = false) {
 }
 
 export async function updateQuantityOfCartItem(cartItemId, quantity) {
-  await updateMagentoCacheSections(['cart','side-by-side']);
+  await updateMagentoCacheSections(['cart', 'side-by-side']);
 
   const done = waitForCart();
   const variables = {
@@ -355,7 +357,7 @@ export async function updateQuantityOfCartItem(cartItemId, quantity) {
       true,
     );
     handleCartErrors(errors);
-    
+
     await store.updateCart(); // update localStorage with latest cart data
 
     console.debug('Update quantity of item in cart', variables, data.updateCartItems.cart);
