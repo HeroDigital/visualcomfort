@@ -374,3 +374,7 @@ header nav[aria-expanded="true"] .nav-menu-content {
     display: none;
   }
 }
+
+nav .icon-shopping-bag:hover {
+  cursor: pointer;
+}

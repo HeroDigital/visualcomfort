@@ -6,7 +6,8 @@
   "scripts": {
     "lint:js": "eslint .",
     "lint:css": "stylelint aem/blocks/**/*.css aem/styles/*.css",
-    "lint": "npm run lint:js && npm run lint:css"
+    "lint": "npm run lint:js && npm run lint:css",
+    "lint-file": "eslint"
   },
   "repository": {
     "type": "git",

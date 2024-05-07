@@ -1,3 +1,4 @@
+import { cartApi } from '../../minicart/api.js';
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 import {
@@ -66,6 +67,39 @@ function createNavHeader(navHeaderContent) {
     navOverlay.classList.add('active');
     document.querySelector('body').classList.add('no-scroll');
     document.querySelector('#close-menu-button').focus();
+  });
+}
+
+function createMiniCart(nav) {
+  const cartIcon = nav.querySelector('.icon-shopping-bag');
+
+  // Minicart
+  const minicartButton = document.createRange().createContextualFragment(`<div class="minicart-wrapper" data-count="">
+    <button type="button" class="nav-cart-button">0</button>
+    <div></div>
+  </div>`);
+  cartIcon.append(minicartButton);
+
+  // toggle minicart on hover
+  cartIcon.addEventListener('click', () => {
+    cartApi.toggleCart();
+  });
+
+  
+  // cartIcon.addEventListener('click', () => {
+  //   cartApi.toggleCart();
+  // });
+
+  // add click event listener to minicart icon
+  // cartIcon.addEventListener('click', (event) => {
+  //   event.preventDefault();
+  //   window.location.href = '/checkout/cart/';
+  // });
+
+  // listen for updates to cart item count and update UI accordingly
+  cartApi.cartItemsQuantity.watch((quantity) => {
+    cartIcon.querySelector('.nav-cart-button').textContent = quantity;
+    cartIcon.querySelector('.minicart-wrapper').dataset.count = quantity;
   });
 }
 
@@ -138,6 +172,9 @@ export default async function decorate(block) {
 
   // create the nav header with hamburger expand/collapse
   createNavHeader(navHeaderContent);
+
+  // create the minicart with item count badge and dropdown
+  createMiniCart(nav);
 
   // create tabs list
   createTabsList(nav, paragraphs);
