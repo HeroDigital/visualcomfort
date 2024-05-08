@@ -1,4 +1,4 @@
-import { addMagentoCacheListener, getLoggedInFromLocalStorage, isTradeCustomer } from '../../storage/util.js';
+import { addMagentoCacheListener, getLoggedInFromLocalStorage, isTradeCustomer, getCustomerFullname } from '../../storage/util.js';
 import { getConfigValue } from '../configs.js';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -80,9 +80,16 @@ export const authApi = {
       `;
 
       // create a <div> and append the <ul> to it
+      // TODO consider appending this element to the mobile menu as well since that is currently missing in mobile.
       const accountMenuWrapper = document.createElement('div');
       accountMenuWrapper.classList.add('account-menu-wrapper');
       accountMenuWrapper.appendChild(accountMenu);
+
+      // create a <div> with the text 'Welcome, ${name}' inside of it, add this div to the accountMenuWrapper
+      const welcomeDiv = document.createElement('div');
+      welcomeDiv.classList.add('welcome');
+      welcomeDiv.textContent = `Welcome, ${getCustomerFullname()}`;
+      accountMenuWrapper.prepend(welcomeDiv);
 
       // append the <div> to the '.icon-user' element
       userIcon.appendChild(accountMenuWrapper);

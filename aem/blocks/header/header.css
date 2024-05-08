@@ -662,6 +662,12 @@ header nav .icon-user.logged-out .account-menu {
   display: none;
 }
 
+@media (width >= 768px) {
+  .welcome {
+    display: none;
+  }
+}
+
 /* cart styles */
 nav .icon-shopping-bag:hover {
   cursor: pointer;
