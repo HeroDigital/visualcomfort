@@ -374,8 +374,53 @@ header nav[aria-expanded="true"] .nav-menu-content {
   .nav-accordion-link-wrapper button {
     display: none;
   }
+
 }
 
+/* account styles */
+header nav .icon-user .account-menu {
+  display: none;
+}
+
+header nav .icon-user.show-account-menu .account-menu {
+  margin-top: 30px;
+  background-color: white;
+  border: 1px solid black;
+  display: block;
+  position: absolute;
+  width: 90px;
+  z-index: 10;
+}
+
+header nav .icon-user.show-account-menu .account-menu::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  border-width: 0 10px 10px;
+  border-style: solid;
+  border-color: transparent transparent black;
+}
+
+header nav .icon-user.logged-in::after {
+  content: '';
+  border-width: 0 5px 5px;
+  border-style: solid;
+  border-color: transparent transparent black;
+  display: inline-block;
+  margin-left: 5px;
+  transition: transform 0.3s ease;
+}
+
+header nav .icon-user.logged-in.show-account-menu::after {
+  transform: rotate(180deg);
+}
+
+header nav .icon-user.logged-out .account-menu {
+  display: none;
+}
+
+/* cart styles */
 nav .icon-shopping-bag:hover {
   cursor: pointer;
 }

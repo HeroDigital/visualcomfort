@@ -113,7 +113,7 @@ export default async function decorate(block) {
               <p>
                 <strong>Are you sure you want to report this photo?</strong>
                 <br />
-                This means it is inappropriate, has violated some law or infringes someone's rights. Reporting this photo will automatically remove it from the gallery for further review, so please be sure before reporting. Please allow 20 minutes for cache to clear and photo to be removed.
+                <span class="description">This means it is inappropriate, has violated some law or infringes someone's rights. Reporting this photo will automatically remove it from the gallery for further review, so please be sure before reporting. Please allow 20 minutes for cache to clear and photo to be removed.</span>
               </p>
               <input type="email" required name="${reportForm.fields[0].name}" placeholder="${reportForm.fields[0].placeholder}" aria-label="${reportForm.fields[0].name}" />
               <input type="text" name="${reportForm.fields[1].name}" placeholder="${reportForm.fields[1].placeholder}" aria-label="${reportForm.fields[1].name}" />

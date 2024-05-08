@@ -161,7 +161,7 @@ export class Minicart extends Component {
 
     return html`<div class="minicart-panel">
       <div class="minicart-actions">
-        <button onClick=${() => { window.location.href = '/checkout/cart/'; }}>View Cart</button>
+        <a href='/checkout/cart/'>View Cart</a>
       </div>
       <ul class="minicart-list">
         ${state.cart.items.map((item, index) => html`<${ProductCard} index=${index} item=${item} formatter=${this.formatter} api=${props.api} />`)}
@@ -169,7 +169,7 @@ export class Minicart extends Component {
       <div class="title">${cart.total_quantity} items in cart</div>
       <div class="subtotal">Sub-Total: <span class="price">${this.formatter.format(cart.prices.subtotal_excluding_tax.value)}</span></div>
       <div class="minicart-actions">
-        <button onClick=${() => { window.location.href = '/checkout/'; }}>Begin Checkout</button>
+        <a href='/checkout/'>Begin Checkout</a>
       </div>
     </div>`;
   }

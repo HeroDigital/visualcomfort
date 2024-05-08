@@ -1,6 +1,7 @@
 import { cartApi } from '../../minicart/api.js';
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
+import { authApi } from '../../scripts/authentication/api.js';
 import {
   createTabsList,
   createTabPanels,
@@ -70,6 +71,10 @@ function createNavHeader(navHeaderContent) {
   });
 }
 
+/**
+ * Render the mini cart in the header using the .icon-shopping-bag as a mount point
+ * @param {Element} nav
+ */
 function createMiniCart(nav) {
   const cartIcon = nav.querySelector('.icon-shopping-bag');
 
@@ -85,7 +90,6 @@ function createMiniCart(nav) {
     cartApi.toggleCart();
   });
 
-  
   // cartIcon.addEventListener('click', () => {
   //   cartApi.toggleCart();
   // });
@@ -101,6 +105,22 @@ function createMiniCart(nav) {
     cartIcon.querySelector('.nav-cart-button').textContent = quantity;
     cartIcon.querySelector('.minicart-wrapper').dataset.count = quantity;
   });
+
+  cartApi.updateCartDisplay(false);
+
+  // This will get the cart, customer, and side-by-side sections from Magento to
+  // set us up to display the correct cart, logged-in status, etc
+  if (!new URLSearchParams(window.location.search).get('skip-delayed')) {
+    cartApi.resolveDrift(3000, true);
+  }
+}
+
+/**
+ * Render the account dropdown in the header using the .icon-user as a mount point
+ */
+function createAccount() {
+  authApi.listenForAuthUpdates();
+  authApi.updateAuthenticationDisplays();
 }
 
 /**
@@ -194,4 +214,7 @@ export default async function decorate(block) {
   // wrap nav and append to header
   const navWrapper = wrapNav(nav);
   block.append(navWrapper);
+
+  // create the account dropdown
+  createAccount();
 }

@@ -122,6 +122,7 @@ export function isMagentoCacheInvalidated(sections) {
  */
 export function getMagentoCache() {
   const magentoCache = localStorage.getItem(COMMERCE_CACHE_STORAGE_KEY);
+
   if (!magentoCache || isMagentoLocalStorageExpired()) {
     return {};
   }
@@ -142,8 +143,17 @@ export function getMagentoCache() {
  */
 export function getLoggedInFromLocalStorage() {
   const magentoCache = getMagentoCache();
-  const registeredCustomer = magentoCache.customer?.firstname !== undefined;
-  return registeredCustomer;
+  return magentoCache.customer?.loggedinStatus === 1;
+}
+
+export function isTradeCustomer() {
+  const magentoCache = getMagentoCache();
+  return magentoCache.customer?.tradeCustomer === '1';
+}
+
+export function isWholesaleCustomer() {
+  const magentoCache = getMagentoCache();
+  return magentoCache.customer?.companyType === 'wholesale';
 }
 
 /**
