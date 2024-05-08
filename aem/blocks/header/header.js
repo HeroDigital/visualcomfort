@@ -7,6 +7,7 @@ import {
   createTabPanels,
   attachTabEventHandlers,
   createMenuAccordion,
+  createSearchBar,
 } from './header-utils.js';
 
 /**
@@ -210,6 +211,9 @@ export default async function decorate(block) {
 
   // create the mobile header
   createMobileHeader(navHeaderContent, menuContent);
+
+  // create searchbar
+  createSearchBar(nav);
 
   // wrap nav and append to header
   const navWrapper = wrapNav(nav);
