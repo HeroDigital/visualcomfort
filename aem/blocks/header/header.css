@@ -396,16 +396,16 @@ header nav .icon-user.show-account-menu .account-menu::before {
   position: absolute;
   top: -10px;
   right: 10px;
-  border-width: 0 10px 10px 10px;
+  border-width: 0 10px 10px;
   border-style: solid;
-  border-color: transparent transparent black transparent;
+  border-color: transparent transparent black;
 }
 
 header nav .icon-user.logged-in::after {
   content: '';
-  border-width: 0 5px 5px 5px;
+  border-width: 0 5px 5px;
   border-style: solid;
-  border-color: transparent transparent black transparent;
+  border-color: transparent transparent black;
   display: inline-block;
   margin-left: 5px;
   transition: transform 0.3s ease;
