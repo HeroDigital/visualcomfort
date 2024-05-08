@@ -160,7 +160,7 @@ function displaySearchResults(results) {
     results.forEach((result) => {
       const resultElement = document.createElement('li');
       resultElement.innerHTML = `
-      <a href="https://www.visualcomfort.com/vcbloomreach/search/index/?q=${result.query}" class="blm-autosuggest__suggestion-term-link" data-suggestion-text="lamp" data-uw-rm-brl="PR" data-uw-original-href="https://www.visualcomfort.com/vcbloomreach/search/index/?q=lamp">
+      <a href="/vcbloomreach/search/index/?q=${result.query}" class="blm-autosuggest__suggestion-term-link" data-suggestion-text="lamp" data-uw-rm-brl="PR" data-uw-original-href="/vcbloomreach/search/index/?q=${result.query}">
         <span class="blm-autosuggest__suggestion-term-link--typed-query">
           ${result.displayText}
         </span>
