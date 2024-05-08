@@ -1,3 +1,13 @@
+.gallery-container #visualcomfort {
+  color: #454545;
+  font-size: 26px;
+  margin: 10px 0 20px;
+}
+
+.gallery-wrapper {
+  margin-bottom: 20px;
+}
+
 .gallery-grid {
   --cols: 2;
   --size: 142px;
@@ -19,7 +29,7 @@
 
 @media (width >= 768px) {
   .gallery-grid {
-    --size: 200px;
+    --size: 210px;
   }
 }
 
