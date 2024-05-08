@@ -151,6 +151,11 @@ export function isTradeCustomer() {
   return magentoCache.customer?.tradeCustomer === '1';
 }
 
+export function getCustomerFullname() {
+  const magentoCache = getMagentoCache();
+  return magentoCache.customer?.fullname ?? '';
+}
+
 export function isWholesaleCustomer() {
   const magentoCache = getMagentoCache();
   return magentoCache.customer?.companyType === 'wholesale';
