@@ -1,6 +1,7 @@
-import { getMetadata } from '../../scripts/aem.js';
+import { getMetadata, fetchPlaceholders } from '../../scripts/aem.js';
 import { getConfigValue } from '../../scripts/configs.js';
 import { loadFragment } from '../fragment/fragment.js';
+import { setAttributes } from '../../scripts/utils.js';
 
 /**
  * loads and decorates the footer
@@ -130,6 +131,19 @@ async function appendBloombreachScript() {
   document.head.appendChild(script);
 }
 
+function appendCookieSettingsButton(element, buttonText) {
+  const listItem = document.createElement('li');
+  const button = document.createElement('button');
+  listItem.append(button);
+  const targetList = element.querySelector('div.list > ul:last-child > li > ul');
+  setAttributes(button, {
+    id: 'ot-sdk-btn',
+    class: 'ot-sdk-show-settings',
+  });
+  button.textContent = buttonText;
+  targetList.append(listItem);
+}
+
 export default async function decorate(block) {
   await appendBloombreachScript();
   const footerMeta = getMetadata('footer');
@@ -183,5 +197,8 @@ export default async function decorate(block) {
     footer.append(frag);
   }
 
+  const placeholders = await fetchPlaceholders();
+  const { cookieSettingsButtonText } = placeholders;
+  appendCookieSettingsButton(footer, cookieSettingsButtonText);
   block.append(footer);
 }

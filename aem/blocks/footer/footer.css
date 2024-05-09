@@ -126,7 +126,8 @@ footer .footer-section .default-content-wrapper {
   text-transform: uppercase;
 }
 
-.footer .default-content-wrapper .list ul li ul li {
+.footer .default-content-wrapper .list ul li ul li, 
+.footer .default-content-wrapper .list ul li ul #ot-sdk-btn.ot-sdk-show-settings {
   white-space: nowrap;
   color: #717171;
   font-size: 13px;
@@ -137,9 +138,19 @@ footer .footer-section .default-content-wrapper {
   margin-bottom: 15px;
 }
 
-.footer .default-content-wrapper .list ul li a {
+.footer .default-content-wrapper .list ul li a,
+.footer .default-content-wrapper .list ul li #ot-sdk-btn.ot-sdk-show-settings,
+.footer .default-content-wrapper .list ul li #ot-sdk-btn.optanon-show-settings {
   color: inherit;
   text-decoration: none;
+}
+
+.footer .default-content-wrapper .list ul li #ot-sdk-btn.ot-sdk-show-settings,
+.footer .default-content-wrapper .list ul li #ot-sdk-btn.optanon-show-settings {
+  border: none;
+  background-color: transparent;
+  margin-top: 0;
+  padding: 0;
 }
 
 footer .footer .footer-section:last-of-type {
