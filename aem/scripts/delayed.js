@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-cycle
 import { sampleRUM, loadScript } from './aem.js';
+import { getConfigValue } from './configs.js';
 import { setAttributes } from './utils.js';
 
 // Core Web Vitals RUM collection
@@ -9,7 +10,7 @@ sampleRUM('cwv');
 loadScript('https://a.visualcomfort.com/gtm.js?id=GTM-PMG8JJ2', { async: true });
 
 // One Trust Script for cookie settings
-async function appendOneTrustScript() {
+function appendOneTrustScript() {
   const script = document.createElement('script');
   setAttributes(script, {
     src: 'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js',
@@ -25,4 +26,17 @@ async function appendOneTrustScript() {
   document.querySelector('body').append(script);
 }
 
-await appendOneTrustScript();
+appendOneTrustScript();
+
+// Human Security
+async function appendHumanSecurityScript() {
+  const scriptSrc = await getConfigValue('human-security-script-src');
+  const script = document.createElement('script');
+  setAttributes(script, {
+    src: scriptSrc,
+    async: 'true',
+  });
+  document.querySelector('body').append(script);
+}
+
+await appendHumanSecurityScript();
