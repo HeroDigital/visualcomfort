@@ -87,8 +87,10 @@ function createMiniCart(nav) {
   cartIcon.append(minicartButton);
 
   // TODO: toggle minicart on hover.
-  cartIcon.addEventListener('click', () => {
-    cartApi.toggleCart();
+  cartIcon.addEventListener('click', (event) => {
+    if (event.target === cartIcon.querySelector('img')) {
+      cartApi.toggleCart();
+    }
   });
 
   // add click event listener to minicart icon to navigate user to cart page.
