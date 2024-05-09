@@ -115,7 +115,10 @@ class ProductCard extends Component {
           <a href="${product.configure_url}">Edit</a>
           <a href="#" onclick=${() => this.setState({ confirmDelete: true })}>Remove</a>
         </div>
-        ${state.confirmDelete && html`<${ConfirmDeletionOverlay} close=${() => this.setState({ confirmDelete: false })} confirm=${() => this.props.api.removeItemFromCart(item.product.item_id, true, 'Cart Quick View')} />`}
+        ${state.confirmDelete && html`<${ConfirmDeletionOverlay} close=${() => this.setState({ confirmDelete: false })} confirm=${async () => { 
+          await this.props.api.removeItemFromCart(item.product.item_id, 'Cart Quick View');
+          this.setState({ confirmDelete: false });
+        }} />`}
       </div>
     </li>`;
   }
