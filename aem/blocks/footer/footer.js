@@ -131,22 +131,6 @@ async function appendBloombreachScript() {
   document.head.appendChild(script);
 }
 
-async function appendOneTrustScript() {
-  const script = document.createElement('script');
-  setAttributes(script, {
-    src: 'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js',
-    type: 'text/javascript',
-    charset: 'UTF-8',
-    'data-domain-script': '7516f616-71f9-4d8a-8637-6f189d4d0511',
-    'data-document-language': 'true',
-  });
-  const scriptContent = document.createTextNode(`
-    function OptanonWrapper() { }
-  `);
-  script.appendChild(scriptContent);
-  document.querySelector('body').append(script);
-}
-
 function appendCookieSettingsButton(element, buttonText) {
   const listItem = document.createElement('li');
   const button = document.createElement('button');
@@ -162,7 +146,6 @@ function appendCookieSettingsButton(element, buttonText) {
 
 export default async function decorate(block) {
   await appendBloombreachScript();
-  await appendOneTrustScript();
   const footerMeta = getMetadata('footer');
   block.textContent = '';
 
