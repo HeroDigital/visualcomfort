@@ -162,6 +162,13 @@ export class Minicart extends Component {
       </div>`;
     }
 
+    let quantityText = '';
+    if (cart.items.length > 10) {
+      quantityText = `10 of ${cart.total_quantity} items in cart`;
+    } else {
+      quantityText = `${cart.total_quantity} items in cart`;
+    }
+
     return html`<div class="minicart-panel">
       <div class="minicart-actions">
         <a href='/checkout/cart/'>View Cart</a>
@@ -169,7 +176,7 @@ export class Minicart extends Component {
       <ul class="minicart-list">
         ${state.cart.items.map((item, index) => html`<${ProductCard} index=${index} item=${item} formatter=${this.formatter} api=${props.api} />`)}
       </ul>
-      <div class="title">${cart.total_quantity} items in cart</div>
+      <div class="title">${quantityText}</div>
       <div class="subtotal">Sub-Total: <span class="price">${this.formatter.format(cart.prices.subtotal_excluding_tax.value)}</span></div>
       <div class="minicart-actions">
         <a href='/checkout/'>Begin Checkout</a>
