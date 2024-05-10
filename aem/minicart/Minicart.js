@@ -249,7 +249,7 @@ export async function toggle(refetch = true) {
   cartVisible = !cartVisible;
 
   const app = html`<${Minicart}
-    visible=${cartVisible} 
+    visible=${cartVisible}
     api=${{
       store,
       removeItemFromCart,
