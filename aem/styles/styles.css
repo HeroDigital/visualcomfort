@@ -250,14 +250,14 @@ main .section br {
 }
 
 @media (width >= 1200px) and (width < 1400px) {
-  .section:not(.nav-menu-content, .hero-container, .nav-brand, .footer-section) {
+  .section:not(.nav-header-section, .nav-menu-content, .hero-container, .nav-brand, .footer-section) {
     max-width: 1400px;
     margin: 0 100px;
   }
 }
 
 @media (width >= 1400px) {
-  .section:not(.nav-menu-content, .hero-container, .nav-brand, .footer-section) {
+  .section:not(.nav-header-section, .nav-menu-content, .hero-container, .nav-brand, .footer-section) {
     max-width: 1400px;
     margin: 0 auto;
   }
@@ -279,4 +279,14 @@ main .section.bottom-border {
 
 .no-scroll {
   overflow-y: hidden;
+}
+
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }

@@ -114,7 +114,12 @@ export function createMenuAccordion(nav) {
     navAccordionLinkWrapper.classList.add('nav-accordion-link-wrapper');
     navAccordionLinkWrapper.append(link);
     item.prepend(navAccordionLinkWrapper);
-
+    const navAccordionContentWrapper = document.createElement('div');
+    navAccordionContentWrapper.classList.add('nav-accordion-content-wrapper');
+    const navAccordionContentInnerWrapper = document.createElement('div');
+    navAccordionContentInnerWrapper.classList.add('nav-accordion-content-inner-wrapper');
+    navAccordionContentWrapper.append(navAccordionContentInnerWrapper);
+    
     // if there is accordion content, create a button to exand/collapse
     const accordionContent = item.querySelector(':scope > ul');
     if (accordionContent) {
@@ -126,26 +131,41 @@ export function createMenuAccordion(nav) {
 
       // attach the event handler for the new button
       accordionButton.addEventListener('click', () => {
-        if (accordionContent.style.height) {
-          accordionContent.style.height = null;
-          accordionContent.setAttribute('aria-hidden', true);
-          accordionContent.classList.remove('active');
+        if (navAccordionContentWrapper.style.height) {
+          navAccordionContentWrapper.style.height = null;
+          navAccordionContentWrapper.setAttribute('aria-hidden', true);
+          navAccordionContentWrapper.classList.remove('active');
         } else {
-          accordionContent.style.height = `${accordionContent.scrollHeight + 20}px`;
-          accordionContent.setAttribute('aria-hidden', false);
-          accordionContent.classList.add('active');
+          navAccordionContentWrapper.setAttribute('aria-hidden', false);
+          navAccordionContentWrapper.classList.add('active');
+          navAccordionContentWrapper.style.height = `${accordionContent.scrollHeight + 40}px`;
         }
       });
 
       // 'hover' behaviors on desktop
 
       item.addEventListener('mouseenter', () => {
-        showMenuContentOnDesktop(accordionContent);
+        showMenuContentOnDesktop(navAccordionContentWrapper);
       });
 
       item.addEventListener('mouseleave', () => {
-        hideMenuContentOnDesktop(accordionContent);
+        hideMenuContentOnDesktop(navAccordionContentWrapper);
       });
+
+      // wrap the accordion content in navAccordionContentWrapper
+      item.insertBefore(navAccordionContentWrapper, accordionContent);
+      navAccordionContentInnerWrapper.append(accordionContent);
+    
+      // add the navFeature element to the navAccordionContentWrapper
+      const navFeature = document.createElement('div');
+      navFeature.classList.add('nav-feature');
+      navAccordionContentInnerWrapper.append(navFeature);
+
+      // move the picture to the navFeature section
+      const picture = accordionContent.querySelector(':scope > li > picture');
+      if (picture) {
+        navFeature.append(picture);
+      }
     }
   });
 }
@@ -216,11 +236,6 @@ function handleSearchBarEvents(searchButton, searchBar) {
         // if the search bar is active, focus on the input
         if (searchBar.classList.contains('active')) {
           searchBar.querySelector('input').focus();
-          // set the overflow to hidden to prevent scrolling
-          document.querySelector('body').style.overflow = 'hidden';
-        } else {
-          // set the overflow to auto to allow scrolling
-          document.querySelector('body').style.overflow = 'auto';
         }
       }
     });
@@ -234,8 +249,6 @@ function handleSearchBarEvents(searchButton, searchBar) {
       searchResultsElement.innerHTML = '';
       searchResultsElement.classList.remove('active');
     }
-    // set the overflow to auto to allow scrolling
-    document.querySelector('body').style.overflow = 'auto';
   });
 
   // check if the focus is on main element
@@ -246,7 +259,6 @@ function handleSearchBarEvents(searchButton, searchBar) {
       searchResultsElement.innerHTML = '';
       searchResultsElement.classList.remove('active');
     }
-    document.querySelector('body').style.overflow = 'auto';
   });
 
   // close the search bar when the close button is clicked
@@ -262,8 +274,6 @@ function handleSearchBarEvents(searchButton, searchBar) {
     const searchResultsElement = document.getElementById('list_results');
     searchResultsElement.innerHTML = '';
     searchResultsElement.classList.remove('active');
-    // set the overflow to auto to allow scrolling
-    document.querySelector('body').style.overflow = 'auto';
   });
 
   searchInput.addEventListener('keyup', (event) => {

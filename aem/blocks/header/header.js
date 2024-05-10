@@ -165,7 +165,7 @@ function createMobileHeader(navHeaderContent, menuContent) {
   mobileNavHeaderLogoImage.innerHTML = navImage.outerHTML;
   mobileMenuHeader.append(mobileNavHeaderLogoImage);
 
-  closeMenuButton.innerHTML = '<span class="close-menu-button-icon">&#10799;</span>';
+  closeMenuButton.innerHTML = '<span class="close-menu-button visually-hidden">Close Menu</span>';
   mobileMenuHeader.append(closeMenuButton);
   menuContent.prepend(mobileMenuHeader);
 
@@ -193,6 +193,10 @@ export default async function decorate(block) {
   navOverlay.id = 'nav-overlay';
   navOverlay.classList.add('nav-overlay');
   document.querySelector('body').prepend(navOverlay);
+
+  // the first section in the block is the nav header section
+  const headerSection = nav.querySelector(':scope > div:nth-child(1)');
+  headerSection.classList.add('nav-header-section');
 
   // the second section in the block is the nav menu content
   const menuContent = nav.querySelector(':scope > div:nth-child(2)');
