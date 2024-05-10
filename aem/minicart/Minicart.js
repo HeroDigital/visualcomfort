@@ -33,6 +33,7 @@ class ProductCard extends Component {
       quantity: props.item.quantity,
       quantityValid: true,
       confirmDelete: false,
+      open: false,
     };
   }
 
@@ -83,6 +84,10 @@ class ProductCard extends Component {
     }
   };
 
+  onClick = () => {
+    this.setState({ open: !this.state.open });
+  };
+
   onSubmitQuantityChange = async (event) => {
     event.target.disabled = true;
     const { quantity } = this.state;
@@ -110,9 +115,8 @@ class ProductCard extends Component {
             />
           </div>
           ${configurable_options &&
-          html`<div class="options">
-            <input type="checkbox" id="see-options-${index}" />
-            <label for="see-options-${index}">See Details</label>
+          html`<div class="options ${state.open ? 'open' : ''}">
+            <strong onClick=${this.onClick}>See Details</strong>
             <dl>
               ${configurable_options.map(
                 ({ option_label, value_label }) => html`<${Fragment}>
