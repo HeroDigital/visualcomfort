@@ -7,6 +7,8 @@ import { loadCSS } from '../scripts/aem.js';
 import { removeItemFromCart, updateQuantityOfCartItem } from './cart.js';
 
 const html = htm.bind(h);
+const MAX_CART_ITEM_QTY = 10000;
+
 let cartVisible = false;
 
 function ConfirmDeletionOverlay(props) {
@@ -76,8 +78,14 @@ class ProductCard extends Component {
   onQuantityChange = (event) => {
     const { value } = event.target;
 
-    const parsedQuantity = parseInt(value, 10);
-    if (parsedQuantity > 0 && parsedQuantity < 50) {
+    let parsedQuantity = parseInt(value, 10);
+
+    // max cart quantity for a single item is 10,000
+    if (parsedQuantity > MAX_CART_ITEM_QTY) {
+      parsedQuantity = MAX_CART_ITEM_QTY;
+    }
+
+    if (parsedQuantity > 0 && parsedQuantity <= MAX_CART_ITEM_QTY) {
       this.setState({ quantity: parsedQuantity, quantityValid: true });
     } else {
       this.setState({ quantity: value, quantityValid: false });
