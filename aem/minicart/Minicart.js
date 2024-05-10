@@ -174,7 +174,7 @@ export class Minicart extends Component {
         <a href='/checkout/cart/'>View Cart</a>
       </div>
       <ul class="minicart-list">
-        ${state.cart.items.map((item, index) => html`<${ProductCard} index=${index} item=${item} formatter=${this.formatter} api=${props.api} />`)}
+        ${state.cart.items.slice(0, 10).map((item, index) => html`<${ProductCard} index=${index} item=${item} formatter=${this.formatter} api=${props.api} />`)}
       </ul>
       <div class="title">${quantityText}</div>
       <div class="subtotal">Sub-Total: <span class="price">${this.formatter.format(cart.prices.subtotal_excluding_tax.value)}</span></div>
