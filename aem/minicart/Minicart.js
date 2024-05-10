@@ -7,10 +7,12 @@ import { loadCSS } from '../scripts/aem.js';
 import { removeItemFromCart, updateQuantityOfCartItem } from './cart.js';
 
 const html = htm.bind(h);
+const MAX_CART_ITEM_QTY = 10000;
+
 let cartVisible = false;
 
 function ConfirmDeletionOverlay(props) {
-  const { close, confirm } = props;
+  const { close, confirm, isRemoving } = props;
 
   return html`<div class="overlay-background">
     <div class="overlay">
@@ -20,7 +22,7 @@ function ConfirmDeletionOverlay(props) {
       </div>
       <div class="actions">
         <button onclick=${close}>Cancel</button>
-        <button onclick=${confirm}>OK</button>
+        <button disabled=${isRemoving} onclick=${confirm}>OK</button>
       </div>
     </div>
   </div>`;
@@ -76,8 +78,14 @@ class ProductCard extends Component {
   onQuantityChange = (event) => {
     const { value } = event.target;
 
-    const parsedQuantity = parseInt(value, 10);
-    if (parsedQuantity > 0 && parsedQuantity < 50) {
+    let parsedQuantity = parseInt(value, 10);
+
+    // max cart quantity for a single item is 10,000
+    if (parsedQuantity > MAX_CART_ITEM_QTY) {
+      parsedQuantity = MAX_CART_ITEM_QTY;
+    }
+
+    if (parsedQuantity > 0 && parsedQuantity <= MAX_CART_ITEM_QTY) {
       this.setState({ quantity: parsedQuantity, quantityValid: true });
     } else {
       this.setState({ quantity: value, quantityValid: false });
@@ -153,12 +161,14 @@ class ProductCard extends Component {
         html`<${ConfirmDeletionOverlay}
           close=${() => this.setState({ confirmDelete: false })}
           confirm=${async () => {
+            this.setState({ isRemoving: true });
             await this.props.api.removeItemFromCart(
               item.product.item_id,
               'Cart Quick View',
             );
-            this.setState({ confirmDelete: false });
+            this.setState({ confirmDelete: false, isRemoving: false });
           }}
+          isRemoving=${this.state.isRemoving}
         />`}
       </div>
     </li>`;
@@ -214,7 +224,7 @@ export class Minicart extends Component {
 
     return html`<div class="minicart-panel">
       <div class="minicart-actions">
-        <a href="/checkout/cart/">View Cart</a>
+        <a href="/checkout/cart/" onclick=${() => window.location.href='/checkout/cart/'}>View Cart</a>
       </div>
       <ul class="minicart-list">
         ${state.cart.items.slice(0, 10).map((item, index) => html`<${ProductCard} index=${index} item=${item} formatter=${this.formatter} api=${props.api} />`)}
@@ -230,7 +240,7 @@ export class Minicart extends Component {
         </div>
       </div>
       <div class="minicart-actions">
-        <a class="checkout" href="/checkout/">Begin Checkout</a>
+        <a class="checkout" href="/checkout/" onclick=${() => window.location.href='/checkout/'}>Begin Checkout</a>
       </div>
     </div>`;
   }
