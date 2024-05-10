@@ -120,11 +120,6 @@
     content: '\e621';
 }
 
-
-.minicart-panel .minicart-list .minicart-product .info .options dl {
-
-}
-
 .minicart-panel .minicart-list .minicart-product .info .options:not(.open) dl {
     display: none;
 }
