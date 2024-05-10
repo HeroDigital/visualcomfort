@@ -181,10 +181,10 @@ export function isWholesaleCustomer() {
  */
 export function isCommerceStatePristine() {
   return (
-    !localStorage.getItem(COMMERCE_CACHE_INVALIDATION_KEY) &&
-    !localStorage.getItem(COMMERCE_CACHE_STORAGE_KEY) &&
-    !localStorage.getItem(COMMERCE_CACHE_TIMEOUT_KEY) &&
-    document.cookie.indexOf(`${COMMERCE_CACHE_SESSION_COOKIE}`) === -1
+    !localStorage.getItem(COMMERCE_CACHE_INVALIDATION_KEY)
+    && !localStorage.getItem(COMMERCE_CACHE_STORAGE_KEY)
+    && !localStorage.getItem(COMMERCE_CACHE_TIMEOUT_KEY)
+    && document.cookie.indexOf(`${COMMERCE_CACHE_SESSION_COOKIE}`) === -1
   );
 }
 
@@ -200,8 +200,7 @@ export async function updateMagentoCacheSections(sections) {
   try {
     const loginAbortController = new AbortController();
     setTimeout(
-      () =>
-        loginAbortController.abort('Section data took too long to respond.'),
+      () => loginAbortController.abort('Section data took too long to respond.'),
       10000,
     );
     result = await fetch(

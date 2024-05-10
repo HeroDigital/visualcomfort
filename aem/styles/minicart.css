@@ -9,12 +9,22 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    left: 20px;
     padding: 20px;
-    position: absolute;
-    right: -30px;
-    top: 35px;
-    width: 320px;
+    position: fixed;
+    right: 20px;
+    top: 70px;
     z-index: 100;
+}
+
+@media (width >= 768px) {
+    .minicart-panel {
+        left: auto;
+        position: absolute;
+        right: -30px;
+        top: 35px;
+        width: 320px;
+    }
 }
 
 .minicart-panel a {
@@ -158,6 +168,7 @@
     appearance: none;
     background-color: transparent;
     border: 1px solid #454545;
+    box-sizing: border-box;
     color: #454545;
     display: inline-flex;
     justify-content: center;
@@ -201,7 +212,7 @@
 }
 
 .minicart-panel .minicart-footer .subtotal {
-    font-family: goudy-old-style;
+    font-family: goudy-old-style, sans-serif;
     font-size: 24px;
 }
 
@@ -226,9 +237,8 @@
 }
 
 .minicart-panel .overlay > .close {
-    display: block;
-    background: url('../../aem/icons/x-lg.svg') center center;
-    background-repeat: no-repeat;
+    align-items: center;
+    display: flex;
     width: 18px;
     height: 18px;
     padding: 18px;
@@ -237,6 +247,17 @@
     margin-left: auto;
     border: 0;
     font-size: 0;
+    place-content: center;
+}
+
+.minicart-panel .overlay > .close::after {
+  -webkit-font-smoothing: antialiased;
+  color: #454545;
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  content: "\e901";
+  font-family: visual-comfort-icons, sans-serif;
 }
 
 .minicart-panel .overlay > .content {

@@ -4,20 +4,20 @@
   border-bottom: 1px solid #ccc;
 }
 
-/* @media (width <= 1280px) {
+@media (width <= 1280px) {
   .nav-wrapper .section {
     margin: 0;
     max-width: none;
   }
 
-  .nav-wrapper .section ul li {
+  .nav-wrapper .section > ul > li {
     border: 0 !important;
   }
 
-  .nav-wrapper .section ul li:not(:has(.icon-search)):not(:has(.icon-shopping-bag)) {
+  .nav-wrapper .section > ul > li:not(:has(.icon-search), :has(.icon-shopping-bag)) {
     display: none;
   }
-} */
+}
 
 /* nav overlay */
 .nav-overlay {
@@ -78,7 +78,6 @@
   justify-self: right;
   padding: 0;
   margin: 0;
-  gap: 10px;
 }
 
 .nav-header-content > ul li {
@@ -86,14 +85,14 @@
 }
 
 @media (width >= 1280px) {
-  .nav-header-content > ul > li:not(:last-child):not(:nth-child(4)) {
+  .nav-header-content > ul > li:not(:last-child, :nth-child(4)) {
     padding-right: 10px; 
     border-right: 1px solid #d8d8d8;
   }
 }
 
 .nav-header-content > ul > li > a {
-  font-family: 'proxima-nova', sans-serif;
+  font-family: proxima-nova, sans-serif;
   font-weight: 500;
   font-size: 12px;
   line-height: 1.2rem;
@@ -105,11 +104,11 @@
   align-items: center;
 }
 
-.nav-header-content > ul > li > a:before {
+.nav-header-content > ul > li > a::before {
   -webkit-font-smoothing: antialiased;
   line-height: 24px;
   color: #333;
-  font-family: 'visual-comfort-icons';
+  font-family: visual-comfort-icons, sans-serif;
   vertical-align: middle;
   display: inline-block;
   font-weight: 400;
@@ -119,13 +118,13 @@
 }
 
 /* showcases */
-.nav-header-content > ul > li:nth-child(1) a:before {
+.nav-header-content > ul > li:nth-child(1) a::before {
   font-size: 18px;
   content: "\e929";
 }
 
 /* contact */
-.nav-header-content > ul > li:nth-child(2) a:before {
+.nav-header-content > ul > li:nth-child(2) a::before {
   font-size: 20px;
   content: "\e902";
 }
@@ -430,13 +429,13 @@ header nav[aria-expanded="true"] .nav-menu-content {
   display: flex;
 }
 
-.nav-mobile-menu-header > button:before {
+.nav-mobile-menu-header > button::before {
   -webkit-font-smoothing: antialiased;
   color: #454545;
   font-size: 16px;
   font-weight: 700;
   content: "\e901";
-  font-family: 'visual-comfort-icons';
+  font-family: visual-comfort-icons, sans-serif;
   align-self: center;
   display: block;
   width: 100%;
@@ -491,6 +490,49 @@ header nav[aria-expanded="true"] .nav-menu-content {
   padding: 0;
 }
 
+.nav-tabs-panel[id="tabpanel-account"] > li,
+.nav-tabs-panel[id="tabpanel-country"] > li {
+  border-bottom: 1px solid #e3e3e3;
+  padding: 16px 0;
+}
+
+@media (width >= 1280px) {
+  .nav-tabs-panel[id="tabpanel-account"],
+  .nav-tabs-panel[id="tabpanel-country"] {
+    display: none !important;
+  }
+
+  .nav-tabs-panel[id="tabpanel-menu"] {
+    display: flex !important;
+  }
+}
+
+.nav-tabs-panel[id="tabpanel-account"] > li a {
+  color: #454545;
+}
+
+.nav-tabs-panel[id="tabpanel-country"] > li {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.nav-tabs-panel[id="tabpanel-country"] > li picture {
+  height: 13px;
+  width: 22px;
+}
+
+.nav-tabs-panel[id="tabpanel-country"] > li img {
+  display: block;
+}
+
+.nav-tabs-panel[id="tabpanel-country"] > li a {
+  color: #454545;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
 .nav-tabs-panel[aria-hidden="true"] {
   display: none;
 }
@@ -540,8 +582,6 @@ header nav[aria-expanded="true"] .nav-menu-content {
 .nav-accordion-content li a {
   font-size: 12px;
   font-weight: 400;
-  letter-spacing: .46px;
-  line-height: normal;
   text-transform: uppercase;
   padding: 8px 0 !important;
   line-height: 2.4rem;
@@ -749,8 +789,10 @@ header nav .nav-header-content > ul > li:not(:has(.icon-search)) {
   padding: 0 10px;
 }
 
-header nav .nav-header-content > ul > li:not(:last-child):not(:has(.icon-search)) {
-  border-right: 1px solid #d8d8d8;
+@media (width >= 1280px) {
+  header nav .nav-header-content > ul > li:not(:last-child, :has(.icon-search)) {
+    border-right: 1px solid #d8d8d8;
+  }
 }
 
 header nav .nav-header-content > ul > li:not(:has(.icon-search)) .icon {
@@ -866,8 +908,10 @@ header nav .icon-user.logged-out .account-menu {
     display: none;
 }
 
-nav .icon-shopping-bag {
-  position: relative;
+@media (width >= 768px) {
+  nav .icon-shopping-bag {
+    position: relative;
+  }
 }
 
 nav .icon-shopping-bag > div {

@@ -119,7 +119,7 @@ export function createMenuAccordion(nav) {
     const navAccordionContentInnerWrapper = document.createElement('div');
     navAccordionContentInnerWrapper.classList.add('nav-accordion-content-inner-wrapper');
     navAccordionContentWrapper.append(navAccordionContentInnerWrapper);
-    
+
     // if there is accordion content, create a button to exand/collapse
     const accordionContent = item.querySelector(':scope > ul');
     if (accordionContent) {
@@ -155,7 +155,7 @@ export function createMenuAccordion(nav) {
       // wrap the accordion content in navAccordionContentWrapper
       item.insertBefore(navAccordionContentWrapper, accordionContent);
       navAccordionContentInnerWrapper.append(accordionContent);
-    
+
       // add the navFeature element to the navAccordionContentWrapper
       const navFeature = document.createElement('div');
       navFeature.classList.add('nav-feature');
