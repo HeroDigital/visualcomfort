@@ -117,6 +117,14 @@ export const cartApi = {
     const { toggle } = await import('./Minicart.js');
     toggle();
   },
+  showCart: async () => {
+    const { showCart } = await import('./Minicart.js');
+    showCart();
+  },
+  hideCart: async () => {
+    const { hideCart } = await import('./Minicart.js');
+    hideCart();
+  },
 
   /**
    * resolve any drift between localStorage/sessionStorage and true commerce session

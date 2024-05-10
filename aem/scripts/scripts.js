@@ -21,6 +21,7 @@ const LCP_BLOCKS = [
  */
 async function loadFonts() {
   await loadCSS('https://use.typekit.net/gyy3evs.css');
+  await loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`);
   try {
     if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('fonts-loaded', 'true');
   } catch (e) {

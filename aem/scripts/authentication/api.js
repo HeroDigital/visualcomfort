@@ -95,9 +95,16 @@ export const authApi = {
       userIcon.appendChild(accountMenuWrapper);
 
       // add click event listener to '.icon-user' element
-      userIcon.addEventListener('click', function () {
-        if (isLoggedIn) {
+      userIcon.addEventListener('click', function (event) {
+        if (isLoggedIn && !event.target.closest('.account-menu')) {
           this.classList.toggle('show-account-menu');
+        }
+      });
+
+      // add click event listener to the document to close the account menu when clicking outside of it
+      document.addEventListener('click', function (event) {
+        if (!event.target.closest('.icon-user') && !event.target.closest('.account-menu')) {
+          userIcon.classList.remove('show-account-menu');
         }
       });
     } else {

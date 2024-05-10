@@ -10,7 +10,9 @@ const COMMERCE_CACHE_SESSION_COOKIE = 'mage-cache-sessid';
  * @returns {boolean} true if local storage is expired
  */
 export function isMagentoLocalStorageExpired() {
-  const localMageCacheTimeout = localStorage.getItem(COMMERCE_CACHE_TIMEOUT_KEY);
+  const localMageCacheTimeout = localStorage.getItem(
+    COMMERCE_CACHE_TIMEOUT_KEY,
+  );
 
   // This cookie will expire around when when the Magento PHP session cookie expires
   // see: vendor/magento/module-customer/view/frontend/web/js/customer-data.js:48
@@ -29,7 +31,7 @@ export function isMagentoLocalStorageExpired() {
     return true;
   }
 
-  const returnValue = (new Date(cacheTimeoutDate).getTime() - new Date().getTime()) < 0;
+  const returnValue = new Date(cacheTimeoutDate).getTime() - new Date().getTime() < 0;
 
   return returnValue;
 }
@@ -50,14 +52,20 @@ export function addMagentoCacheInvalidations(sectionsToAdd) {
     invalidations = JSON.parse(invalidations);
     invalidations = {
       ...invalidations,
-      ...sectionsToAdd.reduce((accumulated, current) => ({ ...accumulated, [current]: true }), {}),
+      ...sectionsToAdd.reduce(
+        (accumulated, current) => ({ ...accumulated, [current]: true }),
+        {},
+      ),
     };
   } catch (e) {
     // noop
     return;
   }
 
-  localStorage.setItem(COMMERCE_CACHE_INVALIDATION_KEY, JSON.stringify(invalidations));
+  localStorage.setItem(
+    COMMERCE_CACHE_INVALIDATION_KEY,
+    JSON.stringify(invalidations),
+  );
 }
 
 /**
@@ -77,12 +85,14 @@ function removeMagentoCacheInvalidations(invalidatedSections) {
     return;
   }
 
-  const result = Object.fromEntries(Object.entries(invalidations).filter(([key]) => {
-    if (invalidatedSections.includes(key)) {
-      return false;
-    }
-    return true;
-  }));
+  const result = Object.fromEntries(
+    Object.entries(invalidations).filter(([key]) => {
+      if (invalidatedSections.includes(key)) {
+        return false;
+      }
+      return true;
+    }),
+  );
   localStorage.setItem(COMMERCE_CACHE_INVALIDATION_KEY, JSON.stringify(result));
 }
 
@@ -95,7 +105,9 @@ function removeMagentoCacheInvalidations(invalidatedSections) {
  * @returns {boolean} true if local storage is expired
  */
 export function isMagentoCacheInvalidated(sections) {
-  const localMageCacheInvalidations = localStorage.getItem(COMMERCE_CACHE_INVALIDATION_KEY);
+  const localMageCacheInvalidations = localStorage.getItem(
+    COMMERCE_CACHE_INVALIDATION_KEY,
+  );
 
   if (!localMageCacheInvalidations) {
     return false;
@@ -108,8 +120,9 @@ export function isMagentoCacheInvalidated(sections) {
     return false;
   }
 
-  const foundMatch = Object.entries(invalidatedCaches)
-    .find(([key, value]) => value === true && sections.includes(key));
+  const foundMatch = Object.entries(invalidatedCaches).find(
+    ([key, value]) => value === true && sections.includes(key),
+  );
 
   return foundMatch !== undefined;
 }
@@ -167,10 +180,12 @@ export function isWholesaleCustomer() {
  * @returns {boolean} true if no commerce state is present
  */
 export function isCommerceStatePristine() {
-  return !localStorage.getItem(COMMERCE_CACHE_INVALIDATION_KEY)
+  return (
+    !localStorage.getItem(COMMERCE_CACHE_INVALIDATION_KEY)
     && !localStorage.getItem(COMMERCE_CACHE_STORAGE_KEY)
     && !localStorage.getItem(COMMERCE_CACHE_TIMEOUT_KEY)
-    && (document.cookie.indexOf(`${COMMERCE_CACHE_SESSION_COOKIE}`) === -1);
+    && document.cookie.indexOf(`${COMMERCE_CACHE_SESSION_COOKIE}`) === -1
+  );
 }
 
 /**
@@ -184,15 +199,23 @@ export async function updateMagentoCacheSections(sections) {
   let updatedSections = null;
   try {
     const loginAbortController = new AbortController();
-    setTimeout(() => loginAbortController.abort('Section data took too long to respond.'), 10000);
-    result = await fetch(`/customer/section/load/?sections=${encodeURIComponent(sections.join(','))}&force_new_section_timestamp=false`, {
-      signal: loginAbortController.signal,
-      headers: {
-        accept: 'application/json, text/javascript, */*; q=0.01',
-        'X-Requested-With': 'XMLHttpRequest',
+    setTimeout(
+      () => loginAbortController.abort('Section data took too long to respond.'),
+      10000,
+    );
+    result = await fetch(
+      `/customer/section/load/?sections=${encodeURIComponent(
+        sections.join(','),
+      )}&force_new_section_timestamp=false`,
+      {
+        signal: loginAbortController.signal,
+        headers: {
+          accept: 'application/json, text/javascript, */*; q=0.01',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        credentials: 'include',
       },
-      credentials: 'include',
-    });
+    );
 
     if (result?.ok) {
       updatedSections = await result.json();
@@ -210,7 +233,11 @@ export async function updateMagentoCacheSections(sections) {
   // always fresher than the Magento session timeout. This ideally would be set
   // to the lifetime of the PHPSESSID but it's unknown here. This could be improved.
   const minutesToTimeout = 25;
-  document.cookie = `${COMMERCE_CACHE_SESSION_COOKIE}=true; path=/; expires=${(new Date(new Date().getTime() + minutesToTimeout * 60000)).toUTCString()}; SameSite=Lax; ${window.location.protocol === 'http:' ? '' : 'Secure'}`;
+  document.cookie = `${COMMERCE_CACHE_SESSION_COOKIE}=true; path=/; expires=${new Date(
+    new Date().getTime() + minutesToTimeout * 60000,
+  ).toUTCString()}; SameSite=Lax; ${
+    window.location.protocol === 'http:' ? '' : 'Secure'
+  }`;
   let magentoCache = localStorage.getItem(COMMERCE_CACHE_STORAGE_KEY);
 
   try {
@@ -227,12 +254,19 @@ export async function updateMagentoCacheSections(sections) {
     removeMagentoCacheInvalidations(sections);
   }
   const minutesToExpire = 30;
-  localStorage.setItem(COMMERCE_CACHE_STORAGE_KEY, JSON.stringify(magentoCache));
+  localStorage.setItem(
+    COMMERCE_CACHE_STORAGE_KEY,
+    JSON.stringify(magentoCache),
+  );
   localStorage.setItem(
     COMMERCE_CACHE_TIMEOUT_KEY,
-    JSON.stringify((new Date(new Date().getTime() + minutesToExpire * 60000)).toISOString()),
+    JSON.stringify(
+      new Date(new Date().getTime() + minutesToExpire * 60000).toISOString(),
+    ),
   );
-  window.dispatchEvent(new StorageEvent('storage', { key: COMMERCE_CACHE_STORAGE_KEY }));
+  window.dispatchEvent(
+    new StorageEvent('storage', { key: COMMERCE_CACHE_STORAGE_KEY }),
+  );
 }
 
 /**

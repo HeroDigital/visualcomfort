@@ -32,7 +32,9 @@ function buildNavElement(fragment) {
   const navElement = document.createElement('nav');
   navElement.id = 'nav';
   navElement.setAttribute('aria-expanded', false);
-  while (fragment.firstElementChild) navElement.append(fragment.firstElementChild);
+  while (fragment.firstElementChild) {
+    navElement.append(fragment.firstElementChild);
+  }
   return navElement;
 }
 
@@ -80,25 +82,35 @@ function createMiniCart(nav) {
   const cartIcon = nav.querySelector('.icon-shopping-bag');
 
   // Minicart
-  const minicartButton = document.createRange().createContextualFragment(`<div class="minicart-wrapper" data-count="">
+  const minicartButton = document.createRange()
+    .createContextualFragment(`<div class="minicart-wrapper" data-count="">
     <button type="button" class="nav-cart-button">0</button>
     <div></div>
   </div>`);
   cartIcon.append(minicartButton);
 
-  // TODO: toggle minicart on hover.
-  cartIcon.addEventListener('click', (event) => {
-    if (event.target === cartIcon.querySelector('img')) {
-      cartApi.toggleCart();
-    }
+  // toggle minicart on img hover
+  let timeout;
+  cartIcon.addEventListener('mouseenter', () => {
+    clearTimeout(timeout);
+    cartApi.showCart();
+  });
+
+  // hide minicart on img mouseleave
+  cartIcon.addEventListener('mouseleave', () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      cartApi.hideCart();
+    }, 250);
   });
 
   // add click event listener to minicart icon to navigate user to cart page.
-  // TODO commented out for now until we have functioning hover state for the minicart icon.
-  // cartIcon.addEventListener('click', (event) => {
-  //   event.preventDefault();
-  //   window.location.href = '/checkout/cart/';
-  // });
+  cartIcon.addEventListener('click', (event) => {
+    event.preventDefault();
+    if (!event.target.closest('.minicart-panel')) {
+      window.location.href = '/checkout/cart/';
+    }
+  });
 
   // listen for updates to cart item count and update UI accordingly
   cartApi.cartItemsQuantity.watch((quantity) => {
@@ -153,7 +165,7 @@ function createMobileHeader(navHeaderContent, menuContent) {
   mobileNavHeaderLogoImage.innerHTML = navImage.outerHTML;
   mobileMenuHeader.append(mobileNavHeaderLogoImage);
 
-  closeMenuButton.innerHTML = '<span class="close-menu-button-icon">&#10799;</span>';
+  closeMenuButton.innerHTML = '<span class="close-menu-button visually-hidden">Close Menu</span>';
   mobileMenuHeader.append(closeMenuButton);
   menuContent.prepend(mobileMenuHeader);
 
@@ -181,6 +193,10 @@ export default async function decorate(block) {
   navOverlay.id = 'nav-overlay';
   navOverlay.classList.add('nav-overlay');
   document.querySelector('body').prepend(navOverlay);
+
+  // the first section in the block is the nav header section
+  const headerSection = nav.querySelector(':scope > div:nth-child(1)');
+  headerSection.classList.add('nav-header-section');
 
   // the second section in the block is the nav menu content
   const menuContent = nav.querySelector(':scope > div:nth-child(2)');
