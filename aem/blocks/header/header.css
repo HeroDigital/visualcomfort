@@ -620,16 +620,52 @@ header nav[aria-expanded="true"] .nav-menu-content {
 }
 
 /* account styles */
+header nav .nav-header-content > ul {
+  align-items: center;
+  display: flex;
+}
+
+header nav .nav-header-content > ul > li:not(:has(.icon-search)) {
+  padding: 0 10px;
+}
+
+header nav .nav-header-content > ul > li:not(:last-child):not(:has(.icon-search)) {
+  border-right: 1px solid #d8d8d8;
+}
+
+header nav .nav-header-content > ul > li:not(:has(.icon-search)) .icon {
+  align-items: center;
+  display: flex;
+  height: 30px;
+  width: auto;
+}
+
+header nav .nav-header-content > ul > li:not(:has(.icon-search)) .icon > img {
+  height: 18px;
+  width: 18px;
+}
+
+header nav .icon-user {
+  position: relative;
+}
+
 header nav .icon-user .account-menu {
   display: none;
 }
 
 header nav .icon-user.show-account-menu .account-menu {
-  margin-top: 30px;
   background-color: white;
-  border: 1px solid black;
+  border: 1px solid #d8d8d8;
+  box-shadow: 0 3px 3px rgba(0 0 0 / 15%);
+  box-sizing: border-box;
   display: block;
+  list-style: none;
   position: absolute;
+  margin: 0;
+  min-width: 175px;
+  padding: 10px;
+  right: -20px;
+  top: 30px;
   width: 90px;
   z-index: 10;
 }
@@ -637,25 +673,53 @@ header nav .icon-user.show-account-menu .account-menu {
 header nav .icon-user.show-account-menu .account-menu::before {
   content: '';
   position: absolute;
-  top: -10px;
+  top: -16px;
   right: 10px;
-  border-width: 0 10px 10px;
-  border-style: solid;
-  border-color: transparent transparent black;
+  border: 8px solid transparent;
+  border-bottom-color: #d8d8d8;
+}
+
+header nav .icon-user.show-account-menu .account-menu::after {
+  content: '';
+  position: absolute;
+  top: -12px;
+  right: 12px;
+  border: 6px solid transparent;
+  border-bottom-color: white;
+}
+
+.header nav .icon-user.show-account-menu .account-menu li {
+  display: block;
+}
+
+header nav .icon-user.show-account-menu .account-menu a {
+  color: #454545;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px;
+  text-transform: uppercase;
+}
+
+header nav .icon-user.show-account-menu .account-menu a:hover {
+  text-decoration: underline;
+}
+
+header nav .icon-user.logged-in {
+  align-items: center;
+  display: flex;
+  gap: 2px;
 }
 
 header nav .icon-user.logged-in::after {
-  content: '';
-  border-width: 0 5px 5px;
-  border-style: solid;
-  border-color: transparent transparent black;
-  display: inline-block;
-  margin-left: 5px;
-  transition: transform 0.3s ease;
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 24 24'%3E%3Cpath d='M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z'/%3E%3C/svg%3E");
+  display: block;
+  height: 24px;
 }
 
 header nav .icon-user.logged-in.show-account-menu::after {
-  transform: rotate(180deg);
+  /* flip the arrow and avoid moving the position */
+  transform: scaleY(-1) translateY(-4px);
 }
 
 header nav .icon-user.logged-out .account-menu {
@@ -669,6 +733,22 @@ header nav .icon-user.logged-out .account-menu {
 }
 
 /* cart styles */
-nav .icon-shopping-bag:hover {
+nav .icon-shopping-bag {
+  position: relative;
+}
+
+nav .icon-shopping-bag > div {
+  display: flex;
+}
+
+nav .icon-shopping-bag > img :hover {
   cursor: pointer;
+}
+
+nav .icon-shopping-bag button {
+  appearance: none;
+  background-color: transparent;
+  border: 0;
+  margin: 0;
+  padding: 0 0 0 6px;
 }
