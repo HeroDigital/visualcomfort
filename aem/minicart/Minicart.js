@@ -10,7 +10,7 @@ const html = htm.bind(h);
 let cartVisible = false;
 
 function ConfirmDeletionOverlay(props) {
-  const { close, confirm } = props;
+  const { close, confirm, isRemoving } = props;
 
   return html`<div class="overlay-background">
     <div class="overlay">
@@ -20,7 +20,7 @@ function ConfirmDeletionOverlay(props) {
       </div>
       <div class="actions">
         <button onclick=${close}>Cancel</button>
-        <button onclick=${confirm}>OK</button>
+        <button disabled=${isRemoving} onclick=${confirm}>OK</button>
       </div>
     </div>
   </div>`;
@@ -153,12 +153,14 @@ class ProductCard extends Component {
         html`<${ConfirmDeletionOverlay}
           close=${() => this.setState({ confirmDelete: false })}
           confirm=${async () => {
+            this.setState({ isRemoving: true });
             await this.props.api.removeItemFromCart(
               item.product.item_id,
               'Cart Quick View',
             );
-            this.setState({ confirmDelete: false });
+            this.setState({ confirmDelete: false, isRemoving: false });
           }}
+          isRemoving=${this.state.isRemoving}
         />`}
       </div>
     </li>`;
@@ -247,7 +249,7 @@ export async function toggle(refetch = true) {
   cartVisible = !cartVisible;
 
   const app = html`<${Minicart}
-    visible=${cartVisible}
+    visible=${cartVisible} 
     api=${{
       store,
       removeItemFromCart,

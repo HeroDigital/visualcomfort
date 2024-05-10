@@ -321,8 +321,18 @@
     color: #fff;
 }
 
+.minicart-panel .overlay > .actions button:last-child:disabled {
+    background-color: #e3e3e3;
+    border: 1px solid transparent;
+    color: #717171;
+}
+
 .minicart-panel .overlay > .actions button:last-child:hover {
     background-color: #717171;
+}
+
+.minicart-panel .overlay > .actions button:last-child:hover:disabled {
+    background-color: #e3e3e3;
 }
 
 @media (width >= 1024px) {
