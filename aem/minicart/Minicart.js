@@ -213,15 +213,7 @@ export class Minicart extends Component {
         <a href="/checkout/cart/">View Cart</a>
       </div>
       <ul class="minicart-list">
-        ${state.cart.items.map(
-          (item, index) =>
-            html`<${ProductCard}
-              index=${index}
-              item=${item}
-              formatter=${this.formatter}
-              api=${props.api}
-            />`,
-        )}
+        ${state.cart.items.slice(0, 10).map((item, index) => html`<${ProductCard} index=${index} item=${item} formatter=${this.formatter} api=${props.api} />`)}
       </ul>
       <div class="minicart-footer">
         <div class="title">${quantityText}</div>
