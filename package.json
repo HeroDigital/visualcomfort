@@ -5,8 +5,9 @@
   "description": "Starter project for Adobe Helix",
   "scripts": {
     "lint:js": "eslint .",
-    "lint:css": "stylelint blocks/**/*.css styles/*.css",
-    "lint": "npm run lint:js && npm run lint:css"
+    "lint:css": "stylelint aem/blocks/**/*.css aem/styles/*.css",
+    "lint": "npm run lint:js && npm run lint:css",
+    "lint-file": "eslint"
   },
   "repository": {
     "type": "git",

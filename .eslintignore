@@ -1,1 +1,9 @@
 helix-importer-ui
+cypress
+node_modules
+.github
+aem/scripts/preact.js
+aem/scripts/authentication
+aem/scripts/commerce.js
+aem/scripts/htm.js
+aem/minicart
