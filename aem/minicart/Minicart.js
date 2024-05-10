@@ -223,16 +223,18 @@ export class Minicart extends Component {
             />`,
         )}
       </ul>
-      <div class="title">${quantityText}</div>
-      <div class="subtotal">
-        <span class="price"
-          >${this.formatter.format(
-            cart.prices.subtotal_excluding_tax.value,
-          )}</span
-        >
+      <div class="minicart-footer">
+        <div class="title">${quantityText}</div>
+        <div class="subtotal">
+          <span class="price"
+            >${this.formatter.format(
+              cart.prices.subtotal_excluding_tax.value,
+            )}</span
+          >
+        </div>
       </div>
       <div class="minicart-actions">
-        <a href="/checkout/">Begin Checkout</a>
+        <a class="checkout" href="/checkout/">Begin Checkout</a>
       </div>
     </div>`;
   }

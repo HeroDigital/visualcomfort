@@ -97,12 +97,12 @@ function createMiniCart(nav) {
   });
 
   // hide minicart on img mouseleave
-  // cartIcon.addEventListener('mouseleave', () => {
-  //   clearTimeout(timeout);
-  //   timeout = setTimeout(() => {
-  //     cartApi.hideCart();
-  //   }, 250);
-  // });
+  cartIcon.addEventListener('mouseleave', () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      cartApi.hideCart();
+    }, 250);
+  });
 
   // add click event listener to minicart icon to navigate user to cart page.
   cartIcon.addEventListener('click', (event) => {
