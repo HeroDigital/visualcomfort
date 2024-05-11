@@ -972,7 +972,7 @@ nav .icon-shopping-bag::before {
 }
 
 @media (width >= 768px) {
-  nav .icon-shopping-bag:before {
+  nav .icon-shopping-bag::before {
     top: 1px;
     position: relative;
   }
