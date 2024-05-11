@@ -231,6 +231,14 @@ export async function createMenuAccordion(nav) {
     }
   });
 
+  // place copies of the showroom and contacts links below mobile menu
+  const menuLinks = nav.querySelectorAll('.nav-header-content > ul > li');
+  const mobileMenuBottomLinks = document.createElement('ul');
+  mobileMenuBottomLinks.id = 'mobile-menu-botom-links';
+  mobileMenuBottomLinks.append(menuLinks[0].cloneNode(true));
+  mobileMenuBottomLinks.append(menuLinks[1].cloneNode(true));
+  siteMenu.append(mobileMenuBottomLinks);
+
   await loadCollections(siteMenu);
 }
 
