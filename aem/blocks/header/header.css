@@ -816,6 +816,7 @@ header nav .nav-header-content > ul > li:not(:has(.icon-search)) > a {
 
 header nav .icon-user {
   position: relative;
+  cursor: pointer;
 }
 
 header nav .icon-user .account-menu {
@@ -946,7 +947,7 @@ nav .icon-shopping-bag button {
   border: 0;
   color: #454545;
   margin: 0;
-  padding: 0 0 0 6px;
+  padding: 4px 0 0 3px;
 }
 
 /* hide shopping bag svg and replace with VC shopping bag icon from fonts */
