@@ -12,7 +12,7 @@ export function insertFormAfterDescription(index, columnDiv) {
           <div class="control">
             <label for="newsletter">
             <span>Email </span>
-              <input name="email" type="email" id="newsletter" placeholder="email@domain.com" data-validate="{required:true, 'validate-email':true}" data-uw-rm-form="nfx">
+              <input name="email" type="email" id="newsletter" placeholder="email@domain.com" required="required" />
             </label>
           </div>
         </div>
@@ -132,9 +132,12 @@ export function validateForm(element) {
     resetFormMessage();
     const email = form.querySelector('input[name="email"]');
     const emailValue = email.value;
-    if (email.checkValidity() && emailValue) {
-      const errorMessage = form.querySelector('.error-message');
-      if (errorMessage) errorMessage.remove();
+    const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    const errorMessage = form.querySelector('.error-message');
+    if (errorMessage) errorMessage.remove();
+
+    if (emailValue && email.checkValidity() && pattern.test(emailValue)) {
       form.reset();
 
       window.exponea.identify(
@@ -163,10 +166,10 @@ export function validateForm(element) {
         false,
       );
     } else {
-      const errorMessage = document.createElement('div');
-      errorMessage.classList.add('error-message');
-      errorMessage.textContent = 'Please enter a valid email address.';
-      email.insertAdjacentElement('afterend', errorMessage);
+      const newErrorMessage = document.createElement('div');
+      newErrorMessage.classList.add('error-message');
+      newErrorMessage.textContent = !emailValue ? 'This Is A Required Field.' : 'Please Enter A Valid Email Address (Ex: johndoe@domain.com).';
+      email.insertAdjacentElement('afterend', newErrorMessage);
     }
   });
 }

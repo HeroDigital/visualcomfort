@@ -57,8 +57,10 @@ footer .footer-section .default-content-wrapper {
   }
 }
 
-.footer .footer-section:first-of-type .default-content-wrapper .column {
-  max-width: 520px;
+@media (width >= 1280px) {
+  .footer .footer-section:first-of-type .default-content-wrapper .column {
+    max-width: 520px;
+  }
 }
 
 .footer .footer-section:first-of-type .column p:first-of-type {
