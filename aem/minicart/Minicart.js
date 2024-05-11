@@ -215,7 +215,7 @@ export class Minicart extends Component {
           <button class="close" onClick=${() => close(false)}>Close</button>
         </div>
         <div className="cart-empty">
-          You have no shopping items in your cart.
+          You have no items in your shopping cart.
         </div>
       </div>`;
     }
