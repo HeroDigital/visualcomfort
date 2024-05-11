@@ -116,7 +116,10 @@ function createMiniCart(nav) {
 
   // listen for updates to cart item count and update UI accordingly
   cartApi.cartItemsQuantity.watch((quantity) => {
-    cartIcon.querySelector('.nav-cart-button').textContent = quantity;
+    const navCartButton = cartIcon.querySelector('.nav-cart-button');
+    navCartButton.textContent = quantity;
+    navCartButton.dataset.count = quantity;
+
     cartIcon.querySelector('.minicart-wrapper').dataset.count = quantity;
   });
 

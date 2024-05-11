@@ -902,8 +902,7 @@ header nav .icon-user.logged-out .account-menu {
 }
 
 /* cart styles */
-.minicart-wrapper[data-count=""],
-.minicart-wrapper[data-count="0"] {
+.nav-cart-button[data-count="0"] {
     display: none;
 }
 
