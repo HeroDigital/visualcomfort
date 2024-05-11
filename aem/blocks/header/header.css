@@ -901,6 +901,26 @@ header nav .icon-user.logged-out .account-menu {
   }
 }
 
+/* hide user bag svg and replace with VC user icon from fonts */
+nav .icon-user img[data-icon-name="user"] {
+  display: none;
+}
+
+nav .icon-user:before {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 22px;
+  line-height: 24px;
+  color: #333;
+  content: "\e900";
+  font-family: 'visual-comfort-icons';
+  vertical-align: middle;
+  display: inline-block;
+  font-weight: 400;
+  overflow: hidden;
+  text-align: center;
+}
+
 /* cart styles */
 .nav-cart-button[data-count="0"] {
     display: none;
@@ -927,4 +947,32 @@ nav .icon-shopping-bag button {
   color: #454545;
   margin: 0;
   padding: 0 0 0 6px;
+}
+
+/* hide shopping bag svg and replace with VC shopping bag icon from fonts */
+nav .icon-shopping-bag img[data-icon-name="shopping-bag"] {
+  display: none;
+}
+
+nav .icon-shopping-bag:before {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 22px;
+  line-height: 24px;
+  color: #454545;
+  content: "\e933";
+  font-family: 'visual-comfort-icons';
+  margin: 0;
+  vertical-align: top;
+  display: inline-block;
+  font-weight: 400;
+  overflow: hidden;
+  text-align: center;
+}
+
+@media (width >= 768px) {
+  nav .icon-shopping-bag:before {
+    top: 1px;
+    position: relative;
+  }
 }
