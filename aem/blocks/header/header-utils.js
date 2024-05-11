@@ -1,4 +1,5 @@
-import { setAttributes, isDesktop } from '../../scripts/utils.js';
+import { countries } from '../../scripts/constants.js';
+import { setAttributes, isDesktop, getSelectedLanguage } from '../../scripts/utils.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 /**
@@ -35,6 +36,42 @@ export function createTabsList(nav, paragraphs) {
   });
 }
 
+function renderMobileCountrySelector(panel) {
+  // using map get the countries array and create the list items
+  const listItems = countries.map((country) => {
+    const listItem = document.createElement('li');
+    // insert flag
+    const flag = document.createElement('div');
+    flag.classList.add('flag', country.flag);
+    listItem.append(flag);
+    // insert link
+    const link = document.createElement('a');
+    link.href = country.href;
+    link.textContent = country.name;
+    // improve accesibility
+    link.setAttribute('aria-label', country.name);
+    // add the param value to the a element
+    link.dataset.param = country.param;
+    listItem.append(link);
+    return listItem;
+  });
+  const language = getSelectedLanguage();
+
+  listItems.forEach((element) => {
+    const link = element.querySelector('a');
+    const isSameLanguage = link.getAttribute('data-param') === `${language}`;
+    if (isSameLanguage) {
+      const span = document.createElement('span');
+      span.textContent = link.textContent;
+      // Get the parent of the link node
+      const linkParent = link.parentNode;
+      linkParent.replaceChild(span, link);
+    }
+  });
+  // append the list items to the country tab
+  panel.append(...listItems);
+}
+
 /**
  * identifies the tab panels from <p> elements in the nav
  * and adds attributes to the <ul> elements
@@ -58,6 +95,10 @@ export function createTabPanels(nav, paragraphs) {
       role: 'tabpanel',
       'aria-hidden': `${index !== 0}`, // set to "true" if not first tab
     });
+
+    if (index === 2) {
+      renderMobileCountrySelector(panel);
+    }
   });
 }
 
@@ -380,4 +421,69 @@ export function createSearchBar(nav) {
   const searchBarWrapper = nav.querySelector('.nav-header-content > ul > li > span.icon-search');
   // attach event handlers
   handleSearchBarEvents(searchButton, searchBarWrapper);
+}
+
+export function generateLanguageDropdown() {
+  // Create the outer div
+  const locationsDropdown = document.createElement('div');
+  locationsDropdown.classList.add('locations-dropdown', 'footer', 'header');
+
+  // Get the language selected from the URL
+  const language = getSelectedLanguage();
+
+  // check if the language is part of the params of the countries array
+  const countrySelected = countries.find((c) => c.param === language) || countries[0];
+
+  // Create the span
+  const toggleSpan = document.createElement('span');
+  toggleSpan.dataset.toggle = 'dropdown';
+  toggleSpan.setAttribute('aria-haspopup', 'true');
+  toggleSpan.setAttribute('aria-expanded', 'false');
+  toggleSpan.setAttribute('id', 'dropdownMenuButton');
+  toggleSpan.setAttribute('role', 'button');
+  toggleSpan.setAttribute('tabindex', '0');
+  toggleSpan.classList.add('action', 'toggle', 'flag', countrySelected.flag);
+
+  // Create the ul
+  const dropdownUl = document.createElement('ul');
+  dropdownUl.classList.add('dropdown');
+  dropdownUl.dataset.target = 'dropdown';
+  dropdownUl.setAttribute('aria-hidden', 'true');
+
+  countries.forEach((country) => {
+    const li = document.createElement('li');
+
+    if (country.href && country.param !== language) {
+      // create the a if is not the country selected
+      const a = document.createElement('a');
+      a.href = country.href;
+      a.dataset.uwRmBrl = 'PR';
+      a.dataset.uwOriginalHref = country.href;
+
+      const flagDiv = document.createElement('div');
+      flagDiv.classList.add('flag', country.flag);
+
+      const span = document.createElement('span');
+      span.textContent = country.name;
+
+      a.append(flagDiv, span);
+      li.append(a);
+    } else {
+      const flagDiv = document.createElement('div');
+      flagDiv.classList.add('flag', country.flag);
+
+      const span = document.createElement('span');
+      span.textContent = country.name;
+
+      li.append(flagDiv, span);
+    }
+
+    dropdownUl.append(li);
+  });
+
+  // Append the span and ul to the outer div
+  locationsDropdown.append(toggleSpan, dropdownUl);
+
+  // return toggleSpan and locationsDropdown
+  return { toggleSpan, locationsDropdown };
 }

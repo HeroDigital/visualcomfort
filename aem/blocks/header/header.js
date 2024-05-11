@@ -8,6 +8,7 @@ import {
   attachTabEventHandlers,
   createMenuAccordion,
   createSearchBar,
+  generateLanguageDropdown,
 } from './header-utils.js';
 
 /**
@@ -234,6 +235,36 @@ export default async function decorate(block) {
 
   // create searchbar
   createSearchBar(nav);
+
+  const iconList = nav.querySelector('.nav-header-content > ul');
+  // create a new li element to hold the country icon
+  const countryItem = document.createElement('li');
+  iconList.append(countryItem);
+
+  const { toggleSpan, locationsDropdown } = generateLanguageDropdown();
+
+  // Append the outer div to defaultContentWrapper as the first child
+  countryItem.prepend(locationsDropdown);
+
+  // click event for dropdown
+  if (locationsDropdown) {
+    locationsDropdown.addEventListener('click', (event) => {
+      const { target } = event;
+      if (target.tagName === 'SPAN') {
+        locationsDropdown.classList.toggle('active');
+        toggleSpan.classList.toggle('active');
+      }
+    });
+
+    // close dropdown when clicking outside
+    document.addEventListener('click', (event) => {
+      const { target } = event;
+      if (!locationsDropdown.contains(target)) {
+        locationsDropdown.classList.remove('active');
+        toggleSpan.classList.remove('active');
+      }
+    });
+  }
 
   // wrap nav and append to header
   const navWrapper = wrapNav(nav);
