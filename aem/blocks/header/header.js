@@ -17,7 +17,7 @@ import {
 
 async function loadNavFragment() {
   const navMeta = getMetadata('nav');
-  const navPath = navMeta ? new URL(navMeta).pathname : '/nav';
+  const navPath = navMeta ? new URL(navMeta).pathname : '/aem/nav';
   const fragment = await loadFragment(navPath);
   return fragment;
 }
