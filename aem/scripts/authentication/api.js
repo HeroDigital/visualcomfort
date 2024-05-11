@@ -94,8 +94,8 @@ export const authApi = {
 
       // mobile account menu
       if (mobileAccountMenu) {
-        const loginItem = mobileAccountMenu.querySelector('li a[href="/customer/account/login/"]');
-        if (loginItem) loginItem.closest('li').remove();
+        const loginItems = mobileAccountMenu.querySelectorAll('li');
+        if (loginItems) loginItems.forEach((item) => item.remove());
         const logoutItem = document.createElement('li');
         logoutItem.innerHTML = `
           <p>Welcome, ${getCustomerFullname()}</p>
@@ -103,6 +103,8 @@ export const authApi = {
             Logout
           </a>
         `;
+        // insert account menu items without the ul wrapper
+        mobileAccountMenu.insertAdjacentHTML('afterbegin', accountMenu.innerHTML);
         mobileAccountMenu.prepend(logoutItem);
       }
 
