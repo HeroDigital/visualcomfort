@@ -1050,3 +1050,15 @@ nav .icon-shopping-bag::before {
     width: 100%;
   }
 }
+
+/* Sale section needs two column layout */
+
+@media (width >= 1280px) {
+  .nav-accordion-content-sale {
+    columns: 2;
+  }
+  
+  .nav-accordion-content-sale > li {
+    min-width: 220px;
+  }
+}

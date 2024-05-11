@@ -227,7 +227,7 @@ export default async function decorate(block) {
   attachTabEventHandlers(nav);
 
   // create accordions for menu
-  createMenuAccordion(nav);
+  await createMenuAccordion(nav);
 
   // create the mobile header
   createMobileHeader(navHeaderContent, menuContent);

@@ -89,7 +89,7 @@ export function attachTabEventHandlers(nav) {
  * @param {HTMLElement} nav
  */
 
-export function createMenuAccordion(nav) {
+export async function createMenuAccordion(nav) {
   const siteMenu = nav.querySelector('.site-menu');
 
   function showMenuContentOnDesktop(accordionContent) {
@@ -106,13 +106,16 @@ export function createMenuAccordion(nav) {
     }
   }
 
-  async function loadCollections(accordionContent) {
+  async function loadCollections(menu) {
+    const collectionsFragment = document.createElement('div');
+    const accordionContent = menu.querySelector('.nav-accordion-content-with-fragment');
     const fragmentPath = accordionContent.querySelector(':scope > li > a').getAttribute('href');
-    const collectionsFragment = await loadFragment(fragmentPath);
-    return collectionsFragment;
+    collectionsFragment.append(await loadFragment(fragmentPath));
+    accordionContent.append(collectionsFragment.querySelector(':scope main > div'));
+    accordionContent.querySelector(':scope > li').remove();
   }
 
-  siteMenu.querySelectorAll(':scope > li').forEach(async (item) => {
+  siteMenu.querySelectorAll(':scope > li').forEach((item, index) => {
     item.classList.add('nav-accordion');
 
     // wrap the first link in a wrapper span
@@ -132,13 +135,9 @@ export function createMenuAccordion(nav) {
     if (accordionContent) {
       accordionContent.classList.add('nav-accordion-content');
 
-      // handle Collections content
-      const collectionsFragment = document.createElement('div');
+      // add class to Collections content
       if (accordionContent.querySelector(':scope > li > a').textContent === '%fragment') {
         accordionContent.classList.add('nav-accordion-content-with-fragment');
-        collectionsFragment.append(await loadCollections(accordionContent));
-        accordionContent.append(collectionsFragment.querySelector(':scope main > div'));
-        accordionContent.querySelector(':scope > li').remove();
       }
 
       const accordionButton = document.createElement('button');
@@ -160,7 +159,6 @@ export function createMenuAccordion(nav) {
       });
 
       // 'hover' behaviors on desktop
-
       item.addEventListener('mouseenter', () => {
         showMenuContentOnDesktop(navAccordionContentWrapper);
       });
@@ -184,8 +182,15 @@ export function createMenuAccordion(nav) {
         navFeature.append(picture);
         accordionContent.classList.add('nav-accordion-content-with-feature');
       }
+
+      // last accordion content is Sale
+      if (index === siteMenu.querySelectorAll(':scope > li').length - 1) {
+        accordionContent.classList.add('nav-accordion-content-sale');
+      }
     }
   });
+
+  await loadCollections(siteMenu);
 }
 
 /**
