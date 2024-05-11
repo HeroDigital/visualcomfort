@@ -17,7 +17,7 @@ import {
 
 async function loadNavFragment() {
   const navMeta = getMetadata('nav');
-  const navPath = navMeta ? new URL(navMeta).pathname : '/nav';
+  const navPath = navMeta ? new URL(navMeta).pathname : '/aem/nav';
   const fragment = await loadFragment(navPath);
   return fragment;
 }
@@ -97,8 +97,10 @@ function createMiniCart(nav) {
   });
 
   // hide minicart on img mouseleave
-  cartIcon.addEventListener('mouseleave', () => {
+  cartIcon.addEventListener('mouseleave', (event) => {
     clearTimeout(timeout);
+    // prevent hiding if the mouse is over the remove modal
+    if (event.relatedTarget.closest('.overlay-background')) return;
     timeout = setTimeout(() => {
       cartApi.hideCart();
     }, 250);
@@ -106,7 +108,7 @@ function createMiniCart(nav) {
 
   // add click event listener to minicart icon to navigate user to cart page.
   cartIcon.addEventListener('click', (event) => {
-    event.preventDefault();
+    if (!event.target.closest('a')) event.preventDefault();
     if (!event.target.closest('.minicart-panel')) {
       window.location.href = '/checkout/cart/';
     }
@@ -114,7 +116,10 @@ function createMiniCart(nav) {
 
   // listen for updates to cart item count and update UI accordingly
   cartApi.cartItemsQuantity.watch((quantity) => {
-    cartIcon.querySelector('.nav-cart-button').textContent = quantity;
+    const navCartButton = cartIcon.querySelector('.nav-cart-button');
+    navCartButton.textContent = quantity;
+    navCartButton.dataset.count = quantity;
+
     cartIcon.querySelector('.minicart-wrapper').dataset.count = quantity;
   });
 

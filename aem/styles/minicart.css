@@ -8,8 +8,6 @@
     color: #454545;
     display: flex;
     flex-direction: column;
-    max-height: min(660px, 80dvh);
-    overflow-y: auto;
     gap: 20px;
     left: 20px;
     padding: 20px;
@@ -19,6 +17,13 @@
     z-index: 100;
 }
 
+.minicart-list-wrapper.scrollable {
+    max-height: min(80dvh, 540px);
+    margin-inline: -20px;
+    padding-inline: 20px;
+    overflow-y: auto;
+}
+
 @media (width >= 768px) {
     .minicart-panel {
         left: auto;
@@ -26,6 +31,12 @@
         right: -30px;
         top: 35px;
         width: 320px;
+    }
+}
+
+@media (width <= 768px) {
+    .minicart-panel {
+        display: none;
     }
 }
 
@@ -100,7 +111,7 @@
 
 .minicart-panel .minicart-list .minicart-product .info .options strong::after {
     content: '\e622';
-    font-family: visual-comfort-icons;
+    font-family: visual-comfort-icons, sans-serif;
     margin-left: 5px;
 }
 
@@ -127,6 +138,7 @@
 .minicart-panel .minicart-list .minicart-product .info .quantity {
     align-items: center;
     display: flex;
+    flex-wrap: wrap;
     font-weight: 600;
     justify-content: space-between;
     gap: 5px;
@@ -155,6 +167,24 @@
 
 .minicart-panel .minicart-list .minicart-product .info .quantity button:disabled {
     opacity: .5;
+}
+
+.minicart-panel .minicart-list .minicart-product .info .quantity-update {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.minicart-panel .minicart-list .minicart-product .info .quantity-update button {
+    align-items: center;
+    border: 1px solid #454545;
+    display: inline-flex;
+    height: 35px;
+    width: 74px;
+}
+
+.minicart-panel .minicart-list .minicart-product .info .quantity-update button:hover {
+    background-color: #f8f8f8;
 }
 
 .minicart-panel .minicart-list .minicart-product > .actions {
@@ -244,7 +274,8 @@
     font-size: 24px;
 }
 
-.minicart-panel .overlay-background {
+/* Remove confirmation portal */
+.overlay-background {
     position: fixed;
     inset: 0;
     background: rgba(51 51 51 / 55%);
@@ -254,7 +285,7 @@
     justify-content: center;
 }
 
-.minicart-panel .overlay {
+.overlay {
     background: var(--background-color);
     box-shadow: 0 0 12px 2px rgba(0 0 0 / 35%);
     margin-left: 20px;
@@ -264,8 +295,9 @@
     position: relative;
 }
 
-.minicart-panel .overlay > .close {
+.overlay > .close {
     align-items: center;
+    background-color: transparent;
     display: flex;
     width: 18px;
     height: 18px;
@@ -278,7 +310,7 @@
     place-content: center;
 }
 
-.minicart-panel .overlay > .close::after {
+.overlay > .close::after {
   -webkit-font-smoothing: antialiased;
   color: #454545;
   display: block;
@@ -288,18 +320,18 @@
   font-family: visual-comfort-icons, sans-serif;
 }
 
-.minicart-panel .overlay > .content {
+.overlay > .content {
     font-size: 14px;
     padding: 0 30px;
 }
 
-.minicart-panel .overlay > .actions {
+.overlay > .actions {
     padding: 30px 30px 35px;
     display: flex;
     gap: 20px;
 }
 
-.minicart-panel .overlay > .actions button {
+.overlay > .actions button {
     border: 1px solid #454545;
     font-size: 12px;
     letter-spacing: 0.25px;
@@ -307,26 +339,26 @@
     width: 50%;
 }
 
-.minicart-panel .overlay > .actions button:first-child:hover {
+.overlay > .actions button:first-child:hover {
     background-color: #f8f8f8;
 }
 
-.minicart-panel .overlay > .actions button:last-child {
+.overlay > .actions button:last-child {
     background-color: #454545;
     color: #fff;
 }
 
-.minicart-panel .overlay > .actions button:last-child:disabled {
+.overlay > .actions button:last-child:disabled {
     background-color: #e3e3e3;
     border: 1px solid transparent;
     color: #717171;
 }
 
-.minicart-panel .overlay > .actions button:last-child:hover {
+.overlay > .actions button:last-child:hover {
     background-color: #717171;
 }
 
-.minicart-panel .overlay > .actions button:last-child:hover:disabled {
+.overlay > .actions button:last-child:hover:disabled {
     background-color: #e3e3e3;
 }
 
