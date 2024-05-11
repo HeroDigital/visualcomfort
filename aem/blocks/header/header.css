@@ -647,6 +647,13 @@ header nav[aria-expanded="true"] .nav-menu-content {
     padding: 30px 30px 30px 0;
     min-width: 220px;
   }
+  
+  /* Designers */
+  .nav-accordion-content:not(.nav-accordion-content-with-feature, .nav-accordion-content-with-fragment) {
+    padding: 40px 50px;
+    min-width: 100%;
+    columns: 4;
+  }
 
   .nav-feature {
     padding: 30px 0;
