@@ -1,4 +1,5 @@
 import { setAttributes, isDesktop } from '../../scripts/utils.js';
+import { loadFragment } from '../fragment/fragment.js';
 
 /**
  * creates the tab buttons from <p> elements in the nav
@@ -105,7 +106,13 @@ export function createMenuAccordion(nav) {
     }
   }
 
-  siteMenu.querySelectorAll(':scope > li').forEach((item) => {
+  async function loadCollections(accordionContent) {
+    const fragmentPath = accordionContent.querySelector(':scope > li > a').getAttribute('href');
+    const collectionsFragment = await loadFragment(fragmentPath);
+    return collectionsFragment;
+  }
+
+  siteMenu.querySelectorAll(':scope > li').forEach(async (item) => {
     item.classList.add('nav-accordion');
 
     // wrap the first link in a wrapper span
@@ -124,6 +131,16 @@ export function createMenuAccordion(nav) {
     const accordionContent = item.querySelector(':scope > ul');
     if (accordionContent) {
       accordionContent.classList.add('nav-accordion-content');
+
+      // handle Collections content
+      const collectionsFragment = document.createElement('div');
+      if (accordionContent.querySelector(':scope > li > a').textContent === '%fragment') {
+        accordionContent.classList.add('nav-accordion-content-with-fragment');
+        collectionsFragment.append(await loadCollections(accordionContent));
+        accordionContent.append(collectionsFragment.querySelector(':scope main > div'));
+        accordionContent.querySelector(':scope > li').remove();
+      }
+
       const accordionButton = document.createElement('button');
       accordionButton.classList.add('nav-accordion-button');
       accordionButton.innerHTML = '<span class="nav-accordion-button-icon">+</span>';
@@ -138,7 +155,7 @@ export function createMenuAccordion(nav) {
         } else {
           navAccordionContentWrapper.setAttribute('aria-hidden', false);
           navAccordionContentWrapper.classList.add('active');
-          navAccordionContentWrapper.style.height = `${accordionContent.scrollHeight + 40}px`;
+          navAccordionContentWrapper.style.height = `${accordionContent.offsetHeight + 40}px`;
         }
       });
 
@@ -156,15 +173,16 @@ export function createMenuAccordion(nav) {
       item.insertBefore(navAccordionContentWrapper, accordionContent);
       navAccordionContentInnerWrapper.append(accordionContent);
 
+      const picture = accordionContent.querySelector(':scope > li > picture');
+
       // add the navFeature element to the navAccordionContentWrapper
+      // if needed
       const navFeature = document.createElement('div');
       navFeature.classList.add('nav-feature');
-      navAccordionContentInnerWrapper.append(navFeature);
-
-      // move the picture to the navFeature section
-      const picture = accordionContent.querySelector(':scope > li > picture');
-      if (picture) {
+      if (picture && !accordionContent.classList.contains('nav-accordion-content-with-fragment')) {
+        navAccordionContentInnerWrapper.append(navFeature);
         navFeature.append(picture);
+        accordionContent.classList.add('nav-accordion-content-with-feature');
       }
     }
   });
