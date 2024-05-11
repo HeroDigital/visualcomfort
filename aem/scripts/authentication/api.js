@@ -50,6 +50,7 @@ export const authApi = {
   updateAuthenticationDisplays: () => {
     const isLoggedIn = getLoggedInFromLocalStorage();
     const userIcon = document.querySelector('.icon-user');
+    const mobileAccountMenu = document.querySelector('#tabpanel-account');
 
     // dont update anything if user is logged in and the account menu is already present
     if (isLoggedIn && userIcon.querySelector('.account-menu-wrapper')) {
@@ -90,6 +91,20 @@ export const authApi = {
       welcomeDiv.classList.add('welcome');
       welcomeDiv.textContent = `Welcome, ${getCustomerFullname()}`;
       accountMenuWrapper.prepend(welcomeDiv);
+
+      // mobile account menu
+      if (mobileAccountMenu) {
+        const loginItem = mobileAccountMenu.querySelector('li a[href="/customer/account/login/"]');
+        if (loginItem) loginItem.closest('li').remove();
+        const logoutItem = document.createElement('li');
+        logoutItem.innerHTML = `
+          <p>Welcome, ${getCustomerFullname()}</p>
+          <a href="/customer/account/logout/">
+            Logout
+          </a>
+        `;
+        mobileAccountMenu.prepend(logoutItem);
+      }
 
       // append the <div> to the '.icon-user' element
       userIcon.appendChild(accountMenuWrapper);

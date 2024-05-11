@@ -34,10 +34,12 @@
   transition: opacity .5s ease, visibility 0s .5s linear;
 }
 
-.nav-overlay.active {
-  visibility: visible;
-  opacity: 1;
-  transition: opacity .5s ease;
+@media (width < 1280px) {
+  .nav-overlay.active {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .5s ease;
+  }
 }
 
 /* nav header content */
@@ -494,6 +496,44 @@ header nav[aria-expanded="true"] .nav-menu-content {
 .nav-tabs-panel[id="tabpanel-country"] > li {
   border-bottom: 1px solid #e3e3e3;
   padding: 16px 0;
+}
+
+.nav-tabs-panel[id="tabpanel-account"] > li:has(a[href="/customer/account/logout/"], a[href="/customer/account/login/"]) > p {
+  color: #454545;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+  line-height: 2;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+
+.nav-tabs-panel[id="tabpanel-account"] > li:has(a[href="/customer/account/logout/"], a[href="/customer/account/login/"]) > a {
+  align-items: center;
+  display: inline-flex;
+  color: #454545;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.75px;
+  line-height: 2;
+  text-transform: uppercase;
+}
+
+.nav-tabs-panel[id="tabpanel-account"] > li:has(a[href="/customer/account/logout/"], a[href="/customer/account/login/"]) > a:hover {
+  text-decoration: none;
+}
+
+.nav-tabs-panel[id="tabpanel-account"] > li:has(a[href="/customer/account/logout/"], a[href="/customer/account/login/"]) > a::before {
+  content: "\e928";
+  font-family: visual-comfort-icons, sans-serif;
+  font-size: 20px;
+  margin-right: 10px;
+  text-decoration: none;
+}
+
+.nav-tabs-panel[id="tabpanel-account"] > li:has(a[href="/customer/account/logout/"]) > a::before {
+  transform: scaleX(-1);
 }
 
 @media (width >= 1280px) {
