@@ -131,8 +131,7 @@
 
 .nav-header-content > ul > li:nth-child(1),
 .nav-header-content > ul > li:nth-child(2),
-.nav-header-content > ul > li:nth-child(3),
-.nav-header-content > ul > li:last-child {
+.nav-header-content > ul > li:nth-child(3) {
   display: none;
 }
 
@@ -364,7 +363,7 @@ header nav[aria-expanded="false"] .nav-hamburger-icon::after {
   z-index: 2;
   width: calc(100% - 54px);
   height: 100%;
-  overflow: scroll;
+  overflow-y: auto;
   transform: translateX(-100%);
   visibility: hidden;
   transition: transform .5s ease, visibility 0s .5s linear;

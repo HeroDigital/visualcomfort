@@ -1,5 +1,6 @@
 /* eslint-disable import/no-cycle, camelcase, max-classes-per-file, class-methods-use-this */
 import { h, Component, Fragment, render } from '../scripts/preact.js';
+import { createPortal } from '../scripts/preact-portal.js';
 import htm from '../scripts/htm.js';
 
 import { store } from './api.js';
@@ -14,18 +15,22 @@ let cartVisible = false;
 function ConfirmDeletionOverlay(props) {
   const { close, confirm, isRemoving } = props;
 
-  return html`<div class="overlay-background">
-    <div class="overlay">
-      <button class="close" onclick=${close}>Close</button>
-      <div class="content">
-        Are you sure you would like to remove this item from the shopping cart?
+  return createPortal(
+    html`<div class="overlay-background">
+      <div class="overlay">
+        <button class="close" onclick=${close}>Close</button>
+        <div class="content">
+          Are you sure you would like to remove this item from the shopping
+          cart?
+        </div>
+        <div class="actions">
+          <button onclick=${close}>Cancel</button>
+          <button disabled=${isRemoving} onclick=${confirm}>OK</button>
+        </div>
       </div>
-      <div class="actions">
-        <button onclick=${close}>Cancel</button>
-        <button disabled=${isRemoving} onclick=${confirm}>OK</button>
-      </div>
-    </div>
-  </div>`;
+    </div>`,
+    document.body,
+  );
 }
 
 class ProductCard extends Component {
@@ -146,9 +151,9 @@ class ProductCard extends Component {
             />
             ${state.quantity !== item.quantity &&
             state.quantityValid &&
-            html`<button onclick=${this.onSubmitQuantityChange}>
-              Update
-            </button>`}
+            html`<div class="quantity-update">
+              <button onclick=${this.onSubmitQuantityChange}>Update</button>
+            </div>`}
           </div>
         </div>
         <div class="actions">
@@ -224,11 +229,31 @@ export class Minicart extends Component {
 
     return html`<div class="minicart-panel">
       <div class="minicart-actions">
-        <a href="/checkout/cart/" onclick=${() => window.location.href='/checkout/cart/'}>View Cart</a>
+        <a
+          href="/checkout/cart/"
+          onclick=${() => (window.location.href = '/checkout/cart/')}
+          >View Cart</a
+        >
       </div>
-      <ul class="minicart-list">
-        ${state.cart.items.slice(0, 10).map((item, index) => html`<${ProductCard} index=${index} item=${item} formatter=${this.formatter} api=${props.api} />`)}
-      </ul>
+      <div
+        class="minicart-list-wrapper ${state.cart.items.length > 3
+          ? 'scrollable'
+          : ''}"
+      >
+        <ul class="minicart-list">
+          ${state.cart.items
+            .slice(0, 10)
+            .map(
+              (item, index) =>
+                html`<${ProductCard}
+                  index=${index}
+                  item=${item}
+                  formatter=${this.formatter}
+                  api=${props.api}
+                />`,
+            )}
+        </ul>
+      </div>
       <div class="minicart-footer">
         <div class="title">${quantityText}</div>
         <div class="subtotal">
@@ -240,7 +265,12 @@ export class Minicart extends Component {
         </div>
       </div>
       <div class="minicart-actions">
-        <a class="checkout" href="/checkout/" onclick=${() => window.location.href='/checkout/'}>Begin Checkout</a>
+        <a
+          class="checkout"
+          href="/checkout/"
+          onclick=${() => (window.location.href = '/checkout/')}
+          >Begin Checkout</a
+        >
       </div>
     </div>`;
   }
