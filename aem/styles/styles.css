@@ -141,6 +141,11 @@ main pre {
   white-space: pre;
 }
 
+/* prevent incoming <u> tags from adding underlines */
+u {
+  text-decoration: none;
+}
+
 /* links */
 a:any-link {
   text-decoration: none;
@@ -250,14 +255,14 @@ main .section br {
 }
 
 @media (width >= 1200px) and (width < 1400px) {
-  .section:not(.nav-header-section, .nav-menu-content, .hero-container, .nav-brand, .footer-section) {
+  .section:not(.nav-collections-container, .nav-header-section, .nav-menu-content, .hero-container, .nav-brand, .footer-section) {
     max-width: 1400px;
     margin: 0 100px;
   }
 }
 
 @media (width >= 1400px) {
-  .section:not(.nav-header-section, .nav-menu-content, .hero-container, .nav-brand, .footer-section) {
+  .section:not(.nav-collections-container, .nav-header-section, .nav-menu-content, .hero-container, .nav-brand, .footer-section) {
     max-width: 1400px;
     margin: 0 auto;
   }
