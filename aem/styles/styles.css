@@ -295,3 +295,32 @@ main .section.bottom-border {
   white-space: nowrap;
   width: 1px;
 }
+
+.skip-link {
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  left: -1000px;
+  overflow: hidden;
+  position: absolute;
+  top: -1000px;
+  width: 1px;
+}
+
+.skip-link:focus {
+  background-color: #f0f0f0;
+  box-shadow: 0 0 3px 1px #c8c8c8;
+  clip: auto;
+  color: #454545;
+  font-size: 14px;
+  height: auto;
+  left: 2px;
+  line-height: 1;
+  padding: 10px;
+  position: fixed;
+  right: 2px;
+  text-align: center;
+  text-decoration: none;
+  top: 2px;
+  width: auto;
+  z-index: 1000;
+}
