@@ -141,6 +141,11 @@ main pre {
   white-space: pre;
 }
 
+/* prevent incoming <u> tags from adding underlines */
+u {
+  text-decoration: none;
+}
+
 /* links */
 a:any-link {
   text-decoration: none;

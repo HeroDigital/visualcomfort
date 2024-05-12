@@ -183,7 +183,7 @@ export async function createMenuAccordion(nav) {
 
       const accordionButton = document.createElement('button');
       accordionButton.classList.add('nav-accordion-button');
-      accordionButton.innerHTML = '<span class="nav-accordion-button-icon">+</span>';
+      accordionButton.innerHTML = '<span class="visually-hidden">Toggle It</span>';
       navAccordionLinkWrapper.append(accordionButton);
 
       // attach the event handler for the new button
@@ -192,10 +192,12 @@ export async function createMenuAccordion(nav) {
           navAccordionContentWrapper.style.height = null;
           navAccordionContentWrapper.setAttribute('aria-hidden', true);
           navAccordionContentWrapper.classList.remove('active');
+          accordionButton.classList.remove('active');
         } else {
           navAccordionContentWrapper.setAttribute('aria-hidden', false);
           navAccordionContentWrapper.classList.add('active');
           navAccordionContentWrapper.style.height = `${accordionContent.offsetHeight + 40}px`;
+          accordionButton.classList.add('active');
         }
       });
 
@@ -235,8 +237,8 @@ export async function createMenuAccordion(nav) {
   const menuLinks = nav.querySelectorAll('.nav-header-content > ul > li');
   const mobileMenuBottomLinks = document.createElement('ul');
   mobileMenuBottomLinks.id = 'mobile-menu-botom-links';
-  mobileMenuBottomLinks.append(menuLinks[0].cloneNode(true));
   mobileMenuBottomLinks.append(menuLinks[1].cloneNode(true));
+  mobileMenuBottomLinks.append(menuLinks[2].cloneNode(true));
   siteMenu.append(mobileMenuBottomLinks);
 
   await loadCollections(siteMenu);
@@ -409,8 +411,8 @@ export function createSearchBar(nav) {
   form.setAttribute('role', 'search');
   form.innerHTML = `
     <input type="text" placeholder="Search" id="searchbar" value="">
-    <button type="button" class="nav-search-close" aria-label="Close search bar">
-      <span class="nav-search-close-icon">x</span>
+    <button type="button" class="nav-search-close">
+      <span class="visually-hidden">Close search bar</span>
     </button>
   `;
   searchBar.append(form);
