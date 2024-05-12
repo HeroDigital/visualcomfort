@@ -105,6 +105,9 @@ export const authApi = {
         `;
         // insert account menu items without the ul wrapper
         mobileAccountMenu.insertAdjacentHTML('afterbegin', accountMenu.innerHTML);
+        // but remove the logout list item
+        mobileAccountMenu.querySelector('li:last-child').remove();
+        // and add the mobile logout item
         mobileAccountMenu.prepend(logoutItem);
       }
 
