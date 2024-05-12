@@ -114,10 +114,32 @@ export const authApi = {
       // append the <div> to the '.icon-user' element
       userIcon.appendChild(accountMenuWrapper);
 
+      userIcon.tabIndex = 0;
+      userIcon.setAttribute('aria-label', 'Open Account Menu');
+      userIcon.setAttribute('aria-haspopup', 'true');
+      userIcon.setAttribute('aria-expanded', 'false');
+
       // add click event listener to '.icon-user' element
       userIcon.addEventListener('click', function (event) {
         if (isLoggedIn && !event.target.closest('.account-menu')) {
           this.classList.toggle('show-account-menu');
+          this.setAttribute('aria-expanded', this.classList.contains('show-account-menu'));
+        }
+      });
+
+      // add keydown event listener to '.icon-user' element
+      userIcon.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          this.classList.toggle('show-account-menu');
+          this.setAttribute('aria-expanded', this.classList.contains('show-account-menu'));
+        }
+      });
+
+      // add focusout event listener to '.icon-user' element
+      userIcon.addEventListener('focusout', function (event) {
+        if (!event.relatedTarget || !event.relatedTarget.closest('.account-menu')) {
+          this.classList.remove('show-account-menu');
+          this.setAttribute('aria-expanded', this.classList.contains('show-account-menu'));
         }
       });
 
