@@ -81,11 +81,14 @@ function createNavHeader(navHeaderContent) {
  */
 function createMiniCart(nav) {
   const cartIcon = nav.querySelector('.icon-shopping-bag');
+  cartIcon.tabIndex = 0;
+  cartIcon.setAttribute('role', 'button');
+  cartIcon.setAttribute('aria-label', 'Go to cart');
 
   // Minicart
   const minicartButton = document.createRange()
     .createContextualFragment(`<div class="minicart-wrapper" data-count="">
-    <button type="button" class="nav-cart-button">0</button>
+    <span class="nav-cart-button">0</span>
     <div></div>
   </div>`);
   cartIcon.append(minicartButton);
@@ -111,6 +114,14 @@ function createMiniCart(nav) {
   cartIcon.addEventListener('click', (event) => {
     if (!event.target.closest('a')) event.preventDefault();
     if (!event.target.closest('.minicart-panel')) {
+      window.location.href = '/checkout/cart/';
+    }
+  });
+
+  // add enter/return and space key event listener to minicart icon to navigate user to cart page
+  cartIcon.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
       window.location.href = '/checkout/cart/';
     }
   });

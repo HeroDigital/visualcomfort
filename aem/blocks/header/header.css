@@ -1099,7 +1099,7 @@ nav .icon-user::before {
 
 /* cart styles */
 .nav-cart-button[data-count="0"] {
-    display: none;
+    display: none !important;
 }
 
 @media (width >= 768px) {
@@ -1177,13 +1177,15 @@ nav .icon-shopping-bag > img :hover {
   }
 }
 
-nav .icon-shopping-bag button {
+nav .icon-shopping-bag .nav-cart-button {
   appearance: none;
   background-color: transparent;
   border: 0;
   color: #454545;
+  font-size: 14px;
+  font-weight: 600;
   margin: 0;
-  padding: 4px 0 0 3px;
+  padding: 4px 0 4px 3px;
 }
 
 /* hide shopping bag svg and replace with VC shopping bag icon from fonts */
