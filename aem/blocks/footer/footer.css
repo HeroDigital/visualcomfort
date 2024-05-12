@@ -394,15 +394,15 @@ footer .footer-section:last-of-type .default-content-wrapper p:last-of-type span
 }
 
 .locations-dropdown.footer span.toggle.flag.flagUK::before {
-  background-image: url("/images/united-kingdom-flag.jpg");
+  background-image: url("/aem/images/united-kingdom-flag.jpg");
 }
 
 .locations-dropdown.footer span.toggle.flag.flagUS::before {
-  background-image: url("/images/united-states-of-america-flag.jpg");
+  background-image: url("/aem/images/united-states-of-america-flag.jpg");
 }
 
 .locations-dropdown.footer span.toggle.flag.flagEU::before {
-  background-image: url("/images/europe-flag.jpg");
+  background-image: url("/aem/images/europe-flag.jpg");
 }
 
 .locations-dropdown.footer ul.dropdown .flag {
@@ -415,17 +415,17 @@ footer .footer-section:last-of-type .default-content-wrapper p:last-of-type span
 }
 
 .locations-dropdown.footer ul.dropdown .flag.flagUS {
-  background: url("/images/united-states-of-america-flag.jpg");
+  background: url("/aem/images/united-states-of-america-flag.jpg");
   background-size: cover;
 }
 
 .locations-dropdown.footer ul.dropdown .flag.flagUK {
-  background:  url("/images/united-kingdom-flag.jpg");
+  background:  url("/aem/aem/images/united-kingdom-flag.jpg");
   background-size: cover;
 }
 
 .locations-dropdown.footer ul.dropdown .flag.flagEU {
-  background: url("/images/europe-flag.jpg");
+  background: url("/aem/aem/images/europe-flag.jpg");
   background-size: cover;
 }
 
