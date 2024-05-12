@@ -105,6 +105,10 @@
     text-transform: uppercase;
 }
 
+.minicart-panel .minicart-list .minicart-product .info .options {
+    padding-top: 7px;
+}
+
 .minicart-panel .minicart-list .minicart-product .info .options strong {
     font-weight: 600;
 }
