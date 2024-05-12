@@ -1125,17 +1125,17 @@ nav .icon-shopping-bag > img :hover {
 }
 
 .nav-tabs-panel[id="tabpanel-country"] > li >  .flag.flagUK {
-  background:  url("/aem/aem/images/united-kingdom-flag.jpg");
+  background:  url("/aem/images/united-kingdom-flag.jpg");
   background-size: cover;
 }
 
 .nav-tabs-panel[id="tabpanel-country"] > li >  .flag.flagUS {
-  background: url("/aem/aem/images/united-states-of-america-flag.jpg");
+  background: url("/aem/images/united-states-of-america-flag.jpg");
   background-size: cover;
 }
 
 .nav-tabs-panel[id="tabpanel-country"] > li >  .flag.flagEU {
-  background: url("/aem/aem/images/europe-flag.jpg");
+  background: url("/aem/images/europe-flag.jpg");
   background-size: cover;
 }
 
