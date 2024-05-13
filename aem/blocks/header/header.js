@@ -1,5 +1,5 @@
 import { cartApi } from '../../minicart/api.js';
-import { getMetadata } from '../../scripts/aem.js';
+import { getMetadata, wrapImgsInLinks } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 import { authApi } from '../../scripts/authentication/api.js';
 import {
@@ -176,7 +176,7 @@ function createMobileHeader(navHeaderContent, menuContent) {
   const closeMenuButton = document.createElement('button');
   closeMenuButton.id = 'close-menu-button';
 
-  const navImage = navHeaderContent.querySelector(':scope > p > picture');
+  const navImage = navHeaderContent.querySelector(':scope > p > a > picture');
   const mobileNavHeaderLogoImage = document.createElement('div');
   mobileNavHeaderLogoImage.classList.add('mobile-nav-header-logo-image');
   mobileNavHeaderLogoImage.innerHTML = navImage.outerHTML;
@@ -222,6 +222,9 @@ export default async function decorate(block) {
   // find the <p> tags in the nav, which will be used
   // to designate the "tabs" for the mobile view
   const paragraphs = [...menuContent.querySelectorAll(':scope > div > p')];
+
+  // handle image links
+  wrapImgsInLinks(navHeaderContent);
 
   // create the nav header with hamburger expand/collapse
   createNavHeader(navHeaderContent);
