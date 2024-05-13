@@ -697,6 +697,22 @@ async function waitForLCP(lcpBlocks) {
   });
 }
 
+/**
+ * Wraps images followed by links within a matching <a> tag.
+ * @param {Element} container The container element
+ */
+function wrapImgsInLinks(container) {
+  const pictures = container.querySelectorAll('picture');
+  pictures.forEach((pic) => {
+    const br = pic.nextElementSibling;
+    const link = br?.nextElementSibling;
+    if (link && link.tagName === 'A' && link.href) {
+      link.innerHTML = pic.outerHTML;
+      pic.replaceWith(link);
+    }
+  });
+}
+
 init();
 
 export {
@@ -723,4 +739,5 @@ export {
   toClassName,
   updateSectionsStatus,
   waitForLCP,
+  wrapImgsInLinks,
 };

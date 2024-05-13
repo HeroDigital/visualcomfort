@@ -1,5 +1,5 @@
 import { cartApi } from '../../minicart/api.js';
-import { getMetadata } from '../../scripts/aem.js';
+import { getMetadata, wrapImgsInLinks } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 import { authApi } from '../../scripts/authentication/api.js';
 import {
@@ -8,6 +8,7 @@ import {
   attachTabEventHandlers,
   createMenuAccordion,
   createSearchBar,
+  generateLanguageDropdown,
 } from './header-utils.js';
 
 /**
@@ -17,7 +18,7 @@ import {
 
 async function loadNavFragment() {
   const navMeta = getMetadata('nav');
-  const navPath = navMeta ? new URL(navMeta).pathname : '/nav';
+  const navPath = navMeta ? new URL(navMeta).pathname : '/aem/nav';
   const fragment = await loadFragment(navPath);
   return fragment;
 }
@@ -80,11 +81,14 @@ function createNavHeader(navHeaderContent) {
  */
 function createMiniCart(nav) {
   const cartIcon = nav.querySelector('.icon-shopping-bag');
+  cartIcon.tabIndex = 0;
+  cartIcon.setAttribute('role', 'button');
+  cartIcon.setAttribute('aria-label', 'Go to cart');
 
   // Minicart
   const minicartButton = document.createRange()
     .createContextualFragment(`<div class="minicart-wrapper" data-count="">
-    <button type="button" class="nav-cart-button">0</button>
+    <span class="nav-cart-button">0</span>
     <div></div>
   </div>`);
   cartIcon.append(minicartButton);
@@ -97,8 +101,10 @@ function createMiniCart(nav) {
   });
 
   // hide minicart on img mouseleave
-  cartIcon.addEventListener('mouseleave', () => {
+  cartIcon.addEventListener('mouseleave', (event) => {
     clearTimeout(timeout);
+    // prevent hiding if the mouse is over the remove modal
+    if (event.relatedTarget.closest('.overlay-background')) return;
     timeout = setTimeout(() => {
       cartApi.hideCart();
     }, 250);
@@ -106,15 +112,26 @@ function createMiniCart(nav) {
 
   // add click event listener to minicart icon to navigate user to cart page.
   cartIcon.addEventListener('click', (event) => {
-    event.preventDefault();
+    if (!event.target.closest('a')) event.preventDefault();
     if (!event.target.closest('.minicart-panel')) {
+      window.location.href = '/checkout/cart/';
+    }
+  });
+
+  // add enter/return and space key event listener to minicart icon to navigate user to cart page
+  cartIcon.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
       window.location.href = '/checkout/cart/';
     }
   });
 
   // listen for updates to cart item count and update UI accordingly
   cartApi.cartItemsQuantity.watch((quantity) => {
-    cartIcon.querySelector('.nav-cart-button').textContent = quantity;
+    const navCartButton = cartIcon.querySelector('.nav-cart-button');
+    navCartButton.textContent = quantity;
+    navCartButton.dataset.count = quantity;
+
     cartIcon.querySelector('.minicart-wrapper').dataset.count = quantity;
   });
 
@@ -159,7 +176,7 @@ function createMobileHeader(navHeaderContent, menuContent) {
   const closeMenuButton = document.createElement('button');
   closeMenuButton.id = 'close-menu-button';
 
-  const navImage = navHeaderContent.querySelector(':scope > p > picture');
+  const navImage = navHeaderContent.querySelector(':scope > p > a > picture');
   const mobileNavHeaderLogoImage = document.createElement('div');
   mobileNavHeaderLogoImage.classList.add('mobile-nav-header-logo-image');
   mobileNavHeaderLogoImage.innerHTML = navImage.outerHTML;
@@ -206,6 +223,9 @@ export default async function decorate(block) {
   // to designate the "tabs" for the mobile view
   const paragraphs = [...menuContent.querySelectorAll(':scope > div > p')];
 
+  // handle image links
+  wrapImgsInLinks(navHeaderContent);
+
   // create the nav header with hamburger expand/collapse
   createNavHeader(navHeaderContent);
 
@@ -222,13 +242,43 @@ export default async function decorate(block) {
   attachTabEventHandlers(nav);
 
   // create accordions for menu
-  createMenuAccordion(nav);
+  await createMenuAccordion(nav);
 
   // create the mobile header
   createMobileHeader(navHeaderContent, menuContent);
 
   // create searchbar
   createSearchBar(nav);
+
+  const iconList = nav.querySelector('.nav-header-content > ul');
+  // create a new li element to hold the country icon
+  const countryItem = document.createElement('li');
+  iconList.append(countryItem);
+
+  const { toggleSpan, locationsDropdown } = generateLanguageDropdown();
+
+  // Append the outer div to defaultContentWrapper as the first child
+  countryItem.prepend(locationsDropdown);
+
+  // click event for dropdown
+  if (locationsDropdown) {
+    locationsDropdown.addEventListener('click', (event) => {
+      const { target } = event;
+      if (target.tagName === 'SPAN') {
+        locationsDropdown.classList.toggle('active');
+        toggleSpan.classList.toggle('active');
+      }
+    });
+
+    // close dropdown when clicking outside
+    document.addEventListener('click', (event) => {
+      const { target } = event;
+      if (!locationsDropdown.contains(target)) {
+        locationsDropdown.classList.remove('active');
+        toggleSpan.classList.remove('active');
+      }
+    });
+  }
 
   // wrap nav and append to header
   const navWrapper = wrapNav(nav);

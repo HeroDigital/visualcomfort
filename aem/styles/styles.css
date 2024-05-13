@@ -141,6 +141,11 @@ main pre {
   white-space: pre;
 }
 
+/* prevent incoming <u> tags from adding underlines */
+u {
+  text-decoration: none;
+}
+
 /* links */
 a:any-link {
   text-decoration: none;
@@ -250,14 +255,14 @@ main .section br {
 }
 
 @media (width >= 1200px) and (width < 1400px) {
-  .section:not(.nav-header-section, .nav-menu-content, .hero-container, .nav-brand, .footer-section) {
+  .section:not(.nav-collections-container, .nav-header-section, .nav-menu-content, .hero-container, .nav-brand, .footer-section) {
     max-width: 1400px;
     margin: 0 100px;
   }
 }
 
 @media (width >= 1400px) {
-  .section:not(.nav-header-section, .nav-menu-content, .hero-container, .nav-brand, .footer-section) {
+  .section:not(.nav-collections-container, .nav-header-section, .nav-menu-content, .hero-container, .nav-brand, .footer-section) {
     max-width: 1400px;
     margin: 0 auto;
   }
@@ -289,4 +294,33 @@ main .section.bottom-border {
   position: absolute;
   white-space: nowrap;
   width: 1px;
+}
+
+.skip-link {
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  left: -1000px;
+  overflow: hidden;
+  position: absolute;
+  top: -1000px;
+  width: 1px;
+}
+
+.skip-link:focus {
+  background-color: #f0f0f0;
+  box-shadow: 0 0 3px 1px #c8c8c8;
+  clip: auto;
+  color: #454545;
+  font-size: 14px;
+  height: auto;
+  left: 2px;
+  line-height: 1;
+  padding: 10px;
+  position: fixed;
+  right: 2px;
+  text-align: center;
+  text-decoration: none;
+  top: 2px;
+  width: auto;
+  z-index: 1000;
 }

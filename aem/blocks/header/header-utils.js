@@ -1,4 +1,6 @@
-import { setAttributes, isDesktop } from '../../scripts/utils.js';
+import { countries } from '../../scripts/constants.js';
+import { setAttributes, isDesktop, getSelectedLanguage } from '../../scripts/utils.js';
+import { loadFragment } from '../fragment/fragment.js';
 
 /**
  * creates the tab buttons from <p> elements in the nav
@@ -34,6 +36,42 @@ export function createTabsList(nav, paragraphs) {
   });
 }
 
+function renderMobileCountrySelector(panel) {
+  // using map get the countries array and create the list items
+  const listItems = countries.map((country) => {
+    const listItem = document.createElement('li');
+    // insert flag
+    const flag = document.createElement('div');
+    flag.classList.add('flag', country.flag);
+    listItem.append(flag);
+    // insert link
+    const link = document.createElement('a');
+    link.href = country.href;
+    link.textContent = country.name;
+    // improve accesibility
+    link.setAttribute('aria-label', country.name);
+    // add the param value to the a element
+    link.dataset.param = country.param;
+    listItem.append(link);
+    return listItem;
+  });
+  const language = getSelectedLanguage();
+
+  listItems.forEach((element) => {
+    const link = element.querySelector('a');
+    const isSameLanguage = link.getAttribute('data-param') === `${language}`;
+    if (isSameLanguage) {
+      const span = document.createElement('span');
+      span.textContent = link.textContent;
+      // Get the parent of the link node
+      const linkParent = link.parentNode;
+      linkParent.replaceChild(span, link);
+    }
+  });
+  // append the list items to the country tab
+  panel.append(...listItems);
+}
+
 /**
  * identifies the tab panels from <p> elements in the nav
  * and adds attributes to the <ul> elements
@@ -57,6 +95,10 @@ export function createTabPanels(nav, paragraphs) {
       role: 'tabpanel',
       'aria-hidden': `${index !== 0}`, // set to "true" if not first tab
     });
+
+    if (index === 2) {
+      renderMobileCountrySelector(panel);
+    }
   });
 }
 
@@ -88,7 +130,7 @@ export function attachTabEventHandlers(nav) {
  * @param {HTMLElement} nav
  */
 
-export function createMenuAccordion(nav) {
+export async function createMenuAccordion(nav) {
   const siteMenu = nav.querySelector('.site-menu');
 
   function showMenuContentOnDesktop(accordionContent) {
@@ -105,7 +147,16 @@ export function createMenuAccordion(nav) {
     }
   }
 
-  siteMenu.querySelectorAll(':scope > li').forEach((item) => {
+  async function loadCollections(menu) {
+    const collectionsFragment = document.createElement('div');
+    const accordionContent = menu.querySelector('.nav-accordion-content-with-fragment');
+    const fragmentPath = accordionContent.querySelector(':scope > li > a').getAttribute('href');
+    collectionsFragment.append(await loadFragment(fragmentPath));
+    accordionContent.append(collectionsFragment.querySelector(':scope main > div'));
+    accordionContent.querySelector(':scope > li').remove();
+  }
+
+  siteMenu.querySelectorAll(':scope > li').forEach((item, index) => {
     item.classList.add('nav-accordion');
 
     // wrap the first link in a wrapper span
@@ -124,9 +175,15 @@ export function createMenuAccordion(nav) {
     const accordionContent = item.querySelector(':scope > ul');
     if (accordionContent) {
       accordionContent.classList.add('nav-accordion-content');
+
+      // add class to Collections content
+      if (accordionContent.querySelector(':scope > li > a').textContent === '%fragment') {
+        accordionContent.classList.add('nav-accordion-content-with-fragment');
+      }
+
       const accordionButton = document.createElement('button');
       accordionButton.classList.add('nav-accordion-button');
-      accordionButton.innerHTML = '<span class="nav-accordion-button-icon">+</span>';
+      accordionButton.innerHTML = '<span class="visually-hidden">Toggle It</span>';
       navAccordionLinkWrapper.append(accordionButton);
 
       // attach the event handler for the new button
@@ -135,15 +192,16 @@ export function createMenuAccordion(nav) {
           navAccordionContentWrapper.style.height = null;
           navAccordionContentWrapper.setAttribute('aria-hidden', true);
           navAccordionContentWrapper.classList.remove('active');
+          accordionButton.classList.remove('active');
         } else {
           navAccordionContentWrapper.setAttribute('aria-hidden', false);
           navAccordionContentWrapper.classList.add('active');
-          navAccordionContentWrapper.style.height = `${accordionContent.scrollHeight + 40}px`;
+          navAccordionContentWrapper.style.height = `${accordionContent.offsetHeight + 40}px`;
+          accordionButton.classList.add('active');
         }
       });
 
       // 'hover' behaviors on desktop
-
       item.addEventListener('mouseenter', () => {
         showMenuContentOnDesktop(navAccordionContentWrapper);
       });
@@ -156,18 +214,34 @@ export function createMenuAccordion(nav) {
       item.insertBefore(navAccordionContentWrapper, accordionContent);
       navAccordionContentInnerWrapper.append(accordionContent);
 
+      const picture = accordionContent.querySelector(':scope > li > picture');
+
       // add the navFeature element to the navAccordionContentWrapper
+      // if needed
       const navFeature = document.createElement('div');
       navFeature.classList.add('nav-feature');
-      navAccordionContentInnerWrapper.append(navFeature);
-
-      // move the picture to the navFeature section
-      const picture = accordionContent.querySelector(':scope > li > picture');
-      if (picture) {
+      if (picture && !accordionContent.classList.contains('nav-accordion-content-with-fragment')) {
+        navAccordionContentInnerWrapper.append(navFeature);
         navFeature.append(picture);
+        accordionContent.classList.add('nav-accordion-content-with-feature');
+      }
+
+      // last accordion content is Sale
+      if (index === siteMenu.querySelectorAll(':scope > li').length - 1) {
+        accordionContent.classList.add('nav-accordion-content-sale');
       }
     }
   });
+
+  // place copies of the showroom and contacts links below mobile menu
+  const menuLinks = nav.querySelectorAll('.nav-header-content > ul > li');
+  const mobileMenuBottomLinks = document.createElement('ul');
+  mobileMenuBottomLinks.id = 'mobile-menu-botom-links';
+  mobileMenuBottomLinks.append(menuLinks[1].cloneNode(true));
+  mobileMenuBottomLinks.append(menuLinks[2].cloneNode(true));
+  siteMenu.append(mobileMenuBottomLinks);
+
+  await loadCollections(siteMenu);
 }
 
 /**
@@ -337,8 +411,8 @@ export function createSearchBar(nav) {
   form.setAttribute('role', 'search');
   form.innerHTML = `
     <input type="text" placeholder="Search" id="searchbar" value="">
-    <button type="button" class="nav-search-close" aria-label="Close search bar">
-      <span class="nav-search-close-icon">x</span>
+    <button type="button" class="nav-search-close">
+      <span class="visually-hidden">Close search bar</span>
     </button>
   `;
   searchBar.append(form);
@@ -357,4 +431,69 @@ export function createSearchBar(nav) {
   const searchBarWrapper = nav.querySelector('.nav-header-content > ul > li > span.icon-search');
   // attach event handlers
   handleSearchBarEvents(searchButton, searchBarWrapper);
+}
+
+export function generateLanguageDropdown() {
+  // Create the outer div
+  const locationsDropdown = document.createElement('div');
+  locationsDropdown.classList.add('locations-dropdown', 'footer', 'header');
+
+  // Get the language selected from the URL
+  const language = getSelectedLanguage();
+
+  // check if the language is part of the params of the countries array
+  const countrySelected = countries.find((c) => c.param === language) || countries[0];
+
+  // Create the span
+  const toggleSpan = document.createElement('span');
+  toggleSpan.dataset.toggle = 'dropdown';
+  toggleSpan.setAttribute('aria-haspopup', 'true');
+  toggleSpan.setAttribute('aria-expanded', 'false');
+  toggleSpan.setAttribute('id', 'dropdownMenuButton');
+  toggleSpan.setAttribute('role', 'button');
+  toggleSpan.setAttribute('tabindex', '0');
+  toggleSpan.classList.add('action', 'toggle', 'flag', countrySelected.flag);
+
+  // Create the ul
+  const dropdownUl = document.createElement('ul');
+  dropdownUl.classList.add('dropdown');
+  dropdownUl.dataset.target = 'dropdown';
+  dropdownUl.setAttribute('aria-hidden', 'true');
+
+  countries.forEach((country) => {
+    const li = document.createElement('li');
+
+    if (country.href && country.param !== language) {
+      // create the a if is not the country selected
+      const a = document.createElement('a');
+      a.href = country.href;
+      a.dataset.uwRmBrl = 'PR';
+      a.dataset.uwOriginalHref = country.href;
+
+      const flagDiv = document.createElement('div');
+      flagDiv.classList.add('flag', country.flag);
+
+      const span = document.createElement('span');
+      span.textContent = country.name;
+
+      a.append(flagDiv, span);
+      li.append(a);
+    } else {
+      const flagDiv = document.createElement('div');
+      flagDiv.classList.add('flag', country.flag);
+
+      const span = document.createElement('span');
+      span.textContent = country.name;
+
+      li.append(flagDiv, span);
+    }
+
+    dropdownUl.append(li);
+  });
+
+  // Append the span and ul to the outer div
+  locationsDropdown.append(toggleSpan, dropdownUl);
+
+  // return toggleSpan and locationsDropdown
+  return { toggleSpan, locationsDropdown };
 }

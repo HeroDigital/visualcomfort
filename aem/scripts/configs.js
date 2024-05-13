@@ -7,12 +7,12 @@
  */
 export const calcEnvironment = () => {
   const { href } = window.location;
-  let environment = 'prod';
-  if (href.includes('.hlx.page') || href.includes('stage2.visualcomfort.com')) {
-    environment = 'stage';
+  let environment = 'dev'; // default to 'dev' for unlisted domains
+  if (href.includes('www.visualcomfort.com') || href.includes('main--adobe-edge--visualcomfort.hlx.live')) {
+    environment = 'prod';
   }
-  if (href.includes('stage3.visualcomfort.com') || href.includes('localhost')) {
-    environment = 'dev';
+  if (href.includes('.hlx.page') || href.includes('stage.visualcomfort.com') || href.includes('stage2.visualcomfort.com')) {
+    environment = 'stage';
   }
 
   const environmentFromConfig = window.sessionStorage.getItem('environment');
