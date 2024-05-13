@@ -115,6 +115,7 @@ export const authApi = {
       userIcon.appendChild(accountMenuWrapper);
 
       userIcon.tabIndex = 0;
+      userIcon.setAttribute('role', 'button');
       userIcon.setAttribute('aria-label', 'Open Account Menu');
       userIcon.setAttribute('aria-haspopup', 'true');
       userIcon.setAttribute('aria-expanded', 'false');
