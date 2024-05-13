@@ -953,6 +953,12 @@ header nav .nav-header-content > ul > li:not(:has(.icon-search)) {
   padding: 0 10px;
 }
 
+@media (width <= 480px) {
+  header nav .nav-header-content > ul > li:not(:has(.icon-search)) {
+    padding: 0 2px;
+  }
+}
+
 header nav .nav-header-content > ul > li:has(.locations-dropdown.footer.header) {
   display: none;
 }
