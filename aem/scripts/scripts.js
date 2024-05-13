@@ -59,6 +59,13 @@ async function loadEager(doc) {
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
+    // add skip to main content link
+    main.id = 'main';
+    const skipLink = document.createElement('a');
+    skipLink.href = '#main';
+    skipLink.classList.add('skip-link');
+    skipLink.textContent = 'Skip to Content';
+    document.body.prepend(skipLink);
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }

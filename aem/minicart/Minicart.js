@@ -127,6 +127,7 @@ class ProductCard extends Component {
               dangerouslySetInnerHTML=${{ __html: product.name }}
             />
           </div>
+          <div class="price">${formatter.format(prices.price.value)}</div>
           ${configurable_options &&
           html`<div class="options ${state.open ? 'open' : ''}">
             <strong onClick=${this.onClick}>See Details</strong>
@@ -139,7 +140,6 @@ class ProductCard extends Component {
               )}
             </dl>
           </div>`}
-          <div class="price">${formatter.format(prices.price.value)}</div>
           <div class="quantity">
             Qty:
             <input

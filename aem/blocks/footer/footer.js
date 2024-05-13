@@ -3,6 +3,7 @@ import { loadFragment } from '../fragment/fragment.js';
 import {
   appendBloombreachScript,
   appendCookieSettingsButton,
+  createMenuAccordion,
   generateLanguageDropdown,
   insertFormAfterDescription,
   validateForm,
@@ -72,6 +73,8 @@ export default async function decorate(block) {
 
       immediateUlElements.forEach((ul) => {
         const clonedUl = ul.cloneNode(true);
+        // add site-menu-footer class to the cloned ul
+        clonedUl.classList.add('site-menu-footer');
         newListDiv.appendChild(clonedUl);
         ul.parentNode.removeChild(ul);
       });
@@ -90,7 +93,7 @@ export default async function decorate(block) {
         p.parentNode.removeChild(p);
       });
       validateForm(newColumnDiv);
-
+      createMenuAccordion(newListDiv);
       defaultContentWrapper.appendChild(newColumnDiv);
       defaultContentWrapper.appendChild(newListDiv);
     }

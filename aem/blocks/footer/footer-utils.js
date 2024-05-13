@@ -1,6 +1,6 @@
 import { getConfigValue } from '../../scripts/configs.js';
 import { countries } from '../../scripts/constants.js';
-import { getSelectedLanguage, setAttributes } from '../../scripts/utils.js';
+import { getSelectedLanguage, isDesktop, setAttributes } from '../../scripts/utils.js';
 
 export function insertFormAfterDescription(index, columnDiv) {
   if (index !== 1) return;
@@ -198,11 +198,68 @@ export function appendCookieSettingsButton(element, buttonText) {
   const listItem = document.createElement('li');
   const button = document.createElement('button');
   listItem.append(button);
-  const targetList = element.querySelector('div.list > ul:last-child > li > ul');
+  const targetList = element.querySelector('div.list > ul.site-menu-footer > li:last-of-type ul');
   setAttributes(button, {
     id: 'ot-sdk-btn',
     class: 'ot-sdk-show-settings',
   });
   button.textContent = buttonText;
   targetList.append(listItem);
+}
+
+export function createMenuAccordion(footer) {
+  const siteMenus = footer.querySelectorAll('.site-menu-footer');
+  siteMenus.forEach((menu) => {
+    const menuListItems = menu.querySelectorAll(':scope > li');
+    // iterate the nodelist of li elements
+    menuListItems.forEach((item) => {
+      item.classList.add('footer-accordion');
+      // wrap the first link in a wrapper span
+      const itemTitle = item.childNodes[0].textContent.trim();
+      // remove the first text inside the li
+      item.childNodes[0].remove();
+      const footerAccordionLinkWrapper = document.createElement('span');
+      footerAccordionLinkWrapper.classList.add('footer-accordion-link-wrapper', 'footer-accordion-link-wrapper-footer');
+      footerAccordionLinkWrapper.append(itemTitle);
+      item.prepend(footerAccordionLinkWrapper);
+      const footerAccordionContentWrapper = document.createElement('div');
+      footerAccordionContentWrapper.classList.add('footer-accordion-content-wrapper', 'footer-accordion-content-wrapper-footer');
+      const footerAccordionContentInnerWrapper = document.createElement('div');
+      footerAccordionContentInnerWrapper.classList.add('footer-accordion-content-inner-wrapper');
+      footerAccordionContentWrapper.append(footerAccordionContentInnerWrapper);
+
+      // if there is accordion content, create a button to exand/collapse
+      const accordionContent = item.querySelector(':scope > ul');
+      if (accordionContent) {
+        accordionContent.classList.add('footer-accordion-content');
+        const accordionButton = document.createElement('button');
+        accordionButton.classList.add('footer-accordion-button');
+        accordionButton.innerHTML = '<span class="footer-accordion-button-icon">+</span>';
+        footerAccordionLinkWrapper.append(accordionButton);
+
+        // attach the event handler for the new button
+        footerAccordionLinkWrapper.addEventListener('click', () => {
+          if (!isDesktop()) {
+            if (footerAccordionContentWrapper.style.height) {
+              footerAccordionContentWrapper.style.height = null;
+              footerAccordionContentWrapper.setAttribute('aria-hidden', true);
+              footerAccordionContentWrapper.classList.remove('active');
+              footerAccordionLinkWrapper.classList.remove('active');
+              footerAccordionLinkWrapper.querySelector('.footer-accordion-button-icon').textContent = '+';
+            } else {
+              footerAccordionContentWrapper.setAttribute('aria-hidden', false);
+              footerAccordionContentWrapper.classList.add('active');
+              footerAccordionLinkWrapper.classList.add('active');
+              footerAccordionContentWrapper.style.height = `${accordionContent.scrollHeight + 40}px`;
+              footerAccordionLinkWrapper.querySelector('.footer-accordion-button-icon').textContent = '-';
+            }
+          }
+        });
+
+        // wrap the accordion content in footerAccordionContentWrapper
+        item.insertBefore(footerAccordionContentWrapper, accordionContent);
+        footerAccordionContentInnerWrapper.append(accordionContent);
+      }
+    });
+  });
 }
