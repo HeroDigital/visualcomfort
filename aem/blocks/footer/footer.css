@@ -14,6 +14,10 @@ footer .footer p {
   margin: 0;
 }
 
+footer .footer p:has(a > picture) {
+  display: inline-flex;
+}
+
 footer br {
   display: none;
 }

@@ -1,4 +1,4 @@
-import { getMetadata, fetchPlaceholders } from '../../scripts/aem.js';
+import { getMetadata, fetchPlaceholders, wrapImgsInLinks } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 import {
   appendBloombreachScript,
@@ -20,7 +20,7 @@ export default async function decorate(block) {
   block.textContent = '';
 
   // load footer fragment
-  const footerPath = footerMeta.footer || '/aem/footer';
+  const footerPath = footerMeta ? new URL(footerMeta).pathname : '/aem/footer';
   const fragment = await loadFragment(footerPath);
   // decorate footer DOM
   const footer = document.createElement('div');
@@ -92,6 +92,7 @@ export default async function decorate(block) {
         insertFormAfterDescription(index, newColumnDiv);
         p.parentNode.removeChild(p);
       });
+      wrapImgsInLinks(newColumnDiv);
       validateForm(newColumnDiv);
       createMenuAccordion(newListDiv);
       defaultContentWrapper.appendChild(newColumnDiv);
