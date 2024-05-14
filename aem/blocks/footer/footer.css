@@ -182,9 +182,7 @@ footer .footer-section .default-content-wrapper {
 .footer .default-content-wrapper .list ul li ul #ot-sdk-btn.ot-sdk-show-settings {
   white-space: nowrap;
   color: #717171;
-  font-size: 13px;
   font-style: normal;
-  font-weight: 300;
   line-height: normal;
   text-transform: capitalize;
   margin-bottom: 15px;
@@ -536,7 +534,8 @@ span.action.toggle.flag.active::after {
   padding: 0;
 }
 
-.footer-accordion-content li a {
+.footer-accordion-content li a,
+.footer-accordion-content li button#ot-sdk-btn.ot-sdk-show-settings {
   font-size: 12px;
   font-weight: 400;
   text-transform: uppercase;
@@ -546,7 +545,8 @@ span.action.toggle.flag.active::after {
 }
 
 @media (width >= 1280px) {
-  .footer-accordion-content li a {
+  .footer-accordion-content li a,
+  .footer-accordion-content li button#ot-sdk-btn.ot-sdk-show-settings {
     font-size: 13px;
     letter-spacing: .25px;
   }

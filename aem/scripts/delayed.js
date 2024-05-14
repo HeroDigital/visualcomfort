@@ -18,6 +18,7 @@ function appendOneTrustScript() {
     charset: 'UTF-8',
     'data-domain-script': '7516f616-71f9-4d8a-8637-6f189d4d0511',
     'data-document-language': 'true',
+    async: true,
   });
   const scriptContent = document.createTextNode(`
     function OptanonWrapper() { }
